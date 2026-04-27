@@ -8,92 +8,204 @@
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
     <style>
-        /* 稍微優化一下左側的排版，讓區塊更清楚 */
-        fieldset { border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px; padding: 15px; background: #fff; }
-        legend { font-weight: bold; color: #2b7a78; background: #e8f4f4; padding: 5px 10px; border-radius: 4px; }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-        .checkbox-group label { font-weight: normal; display: flex; align-items: center; }
-        .checkbox-group input { width: auto; margin-right: 5px; }
+        /* 提升左側表單的質感與易讀性 */
+        fieldset { border: 1px solid #ccc; border-radius: 8px; margin-bottom: 24px; padding: 16px; background: #fff; }
+        legend { font-weight: bold; color: #fff; background: #2b7a78; padding: 6px 12px; border-radius: 6px; font-size: 14px; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .form-row > div { flex: 1; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px; background: #f9f9f9; padding: 10px; border-radius: 4px; }
+        .checkbox-group label { display: flex; align-items: center; font-weight: normal; font-size: 14px; cursor: pointer; }
+        .checkbox-group input { margin-right: 6px; cursor: pointer; }
+        hr { border: 0; border-top: 1px dashed #ccc; margin: 15px 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="left-panel">
-            <h2>報告書輸入區</h2>
+            <h2>分析報告書輸入區</h2>
             <form id="pdfForm">
                 
                 <fieldset>
-                    <legend>要保人資料</legend>
-                    <div class="form-group">
-                        <label for="applicantName">要保人姓名：</label>
-                        <input type="text" id="applicantName" placeholder="例如：王小明">
+                    <legend>報告書類別</legend>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="chk_cat1"> 人身保險</label>
+                        <label><input type="checkbox" id="chk_cat2"> 財產保險</label>
+                        <label><input type="checkbox" id="chk_cat3"> 旅平險</label>
                     </div>
-                    <div class="form-group">
-                        <label for="applicantId">身分證字號：</label>
-                        <input type="text" id="applicantId" placeholder="例如：T123456789">
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantBirthday">生日：</label>
-                        <input type="text" id="applicantBirthday" placeholder="例如：0800101">
-                    </div>
-                    <div class="form-group">
-                        <label for="applicantOccupation">職業：</label>
-                        <input type="text" id="applicantOccupation" placeholder="例如：行政人員">
-                    </div>
-                    <div class="form-group">
-                        <label>性別：</label>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" id="appGenderMale"> 男</label>
-                            <label><input type="checkbox" id="appGenderFemale"> 女</label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>基本資料</legend>
+                    <div class="form-row">
+                        <div>
+                            <label>要保人姓名</label>
+                            <input type="text" id="app_name">
+                        </div>
+                        <div>
+                            <label>身分證字號</label>
+                            <input type="text" id="app_id">
                         </div>
                     </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>被保人資料</legend>
-                    <div class="form-group">
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" id="sameAsApplicant"> 同要保人</label>
+                    <div class="form-row">
+                        <div>
+                            <label>生日</label>
+                            <input type="text" id="app_birth">
+                        </div>
+                        <div>
+                            <label>職業</label>
+                            <input type="text" id="app_job">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="insuredName">被保人姓名：</label>
-                        <input type="text" id="insuredName" placeholder="例如：陳小美">
+                    <label>要保人性別</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="chk_app_m"> 男</label>
+                        <label><input type="checkbox" id="chk_app_f"> 女</label>
                     </div>
-                    <div class="form-group">
-                        <label for="insuredId">身分證字號：</label>
-                        <input type="text" id="insuredId" placeholder="例如：A223456789">
+                    <hr>
+                    <div class="checkbox-group" style="background: #eef;">
+                        <label><input type="checkbox" id="chk_same_app"> 同要保人</label>
                     </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>本次投保目的及需求</legend>
-                    <div class="form-group">
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" id="purpose1"> 保障需求</label>
-                            <label><input type="checkbox" id="purpose2"> 醫療給付</label>
-                            <label><input type="checkbox" id="purpose3"> 退休規劃</label>
-                            <label><input type="checkbox" id="purpose4"> 損害填補</label>
-                            </div>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>欲投保之保險種類</legend>
-                    <div class="form-group">
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" id="typeLife"> 壽險</label>
-                            <label><input type="checkbox" id="typeHealth"> 健康險</label>
-                            <label><input type="checkbox" id="typeAccident"> 傷害險</label>
+                    <div class="form-row">
+                        <div>
+                            <label>被保人姓名</label>
+                            <input type="text" id="ins_name">
+                        </div>
+                        <div>
+                            <label>身分證字號</label>
+                            <input type="text" id="ins_id">
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div>
+                            <label>生日</label>
+                            <input type="text" id="ins_birth">
+                        </div>
+                        <div>
+                            <label>職業</label>
+                            <input type="text" id="ins_job">
+                        </div>
+                    </div>
+                    <label>被保人性別</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="chk_ins_m"> 男</label>
+                        <label><input type="checkbox" id="chk_ins_f"> 女</label>
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <div>
+                            <label>車牌號碼</label>
+                            <input type="text" id="vehicle_plate">
+                        </div>
+                        <div>
+                            <label>車輛種類</label>
+                            <input type="text" id="vehicle_type">
+                        </div>
+                    </div>
+                    <label>關係 (其他說明)</label>
+                    <input type="text" id="relation_other" placeholder="填寫其他關係">
                 </fieldset>
 
                 <fieldset>
-                    <legend>業務員建議與公司</legend>
-                    <div class="form-group">
-                        <label for="insuranceCompany">保險公司名稱①：</label>
-                        <input type="text" id="insuranceCompany" placeholder="請輸入公司名稱">
+                    <legend>保險需求</legend>
+                    <label>本次投保之目的及需求</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="chk_need1"> 保障需求</label>
+                        <label><input type="checkbox" id="chk_need2"> 醫療給付</label>
+                        <label><input type="checkbox" id="chk_need3"> 退休規劃</label>
+                        <label><input type="checkbox" id="chk_need4"> 損害填補</label>
+                        <label><input type="checkbox" id="chk_need5"> 法令要求</label>
+                        <label><input type="checkbox" id="chk_need6"> 風險移轉</label>
+                    </div>
+                    <label>其他說明</label>
+                    <input type="text" id="need_other">
+                    
+                    <label>欲投保之保險種類</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="chk_type1"> 壽險</label>
+                        <label><input type="checkbox" id="chk_type2"> 健康險</label>
+                        <label><input type="checkbox" id="chk_type3"> 傷害險</label>
+                        <label><input type="checkbox" id="chk_type4"> 失扶/長看險</label>
+                        <label><input type="checkbox" id="chk_type5"> 年金險</label>
+                        <label><input type="checkbox" id="chk_type6"> 投資型</label>
+                    </div>
+                    
+                    <label>指定保險公司</label>
+                    <input type="text" id="specify_company">
+                    
+                    <div class="form-row">
+                        <div>
+                            <label>欲投保保額 ①</label>
+                            <input type="text" id="amt_1">
+                        </div>
+                        <div>
+                            <label>單位 ①</label>
+                            <input type="text" id="unit_1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label>欲投保保額 ②</label>
+                            <input type="text" id="amt_2">
+                        </div>
+                        <div>
+                            <label>單位 ②</label>
+                            <input type="text" id="unit_2">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div><label>保險期間 (起年)</label><input type="text" id="period_y1"></div>
+                        <div><label>(月)</label><input type="text" id="period_m1"></div>
+                        <div><label>(日)</label><input type="text" id="period_d1"></div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>保險費支出</legend>
+                    <div class="form-row">
+                        <div>
+                            <label>保費金額</label>
+                            <input type="text" id="premium_amt">
+                        </div>
+                        <div>
+                            <label>其他來源</label>
+                            <input type="text" id="source_other">
+                        </div>
+                    </div>
+                    <label>風險屬性變更說明 / 其他</label>
+                    <input type="text" id="risk_other">
+                </fieldset>
+
+                <fieldset>
+                    <legend>業務員建議</legend>
+                    <label>保險公司名稱 ①</label>
+                    <input type="text" id="rec_comp_1">
+                    <label>保險公司名稱 ②</label>
+                    <input type="text" id="rec_comp_2">
+                    <label>保險公司名稱 ③</label>
+                    <input type="text" id="rec_comp_3">
+                    
+                    <label>保險商品 專案/其他說明</label>
+                    <input type="text" id="rec_prod_other">
+                    
+                    <div class="form-row">
+                        <div><label>保費 ①</label><input type="text" id="rec_prem_1"></div>
+                        <div><label>保費 ②</label><input type="text" id="rec_prem_2"></div>
+                        <div><label>保費 ③</label><input type="text" id="rec_prem_3"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>年期 ①</label><input type="text" id="rec_year_1"></div>
+                        <div><label>年期 ②</label><input type="text" id="rec_year_2"></div>
+                        <div><label>年期 ③</label><input type="text" id="rec_year_3"></div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>填表日期</legend>
+                    <div class="form-row">
+                        <div><label>年</label><input type="text" id="date_y"></div>
+                        <div><label>月</label><input type="text" id="date_m"></div>
+                        <div><label>日</label><input type="text" id="date_d"></div>
                     </div>
                 </fieldset>
 
