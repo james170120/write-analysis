@@ -75,7 +75,7 @@ async function updatePreview() {
     // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
     fillField(form, 'fill_16', 'applicantName');
     // 👇 第五個參數加上 TextAlignment.Right，強制靠右對齊！
-    fillField(form, 'fill_17', 'applicantId', 10, TextAlignment.Left);
+    fillField(form, 'fill_17', 'applicantId', 8, TextAlignment.Left);
     fillField(form, 'fill_18', 'applicantBirthday');
     fillField(form, 'fill_19', 'applicantOccupation');
     fillField(form, 'Text8', 'insuranceCompany');
