@@ -1,32 +1,53 @@
 const { PDFDocument } = PDFLib;
 
 const pdfUrl = './書面分析報告輸入版.pdf';
-// 👇 新增字型檔案的路徑 (請確認檔名與你資料夾中的一致)
 const fontUrl = './NotoSansTC-VariableFont_wght.ttf';
 
 let originalPdfBytes = null;
-let originalFontBytes = null; // 用來儲存字型資料
+let originalFontBytes = null;
 
-const DEBUG_MODE = false; 
+// 🌟 解決延遲：新增一個計時器變數
+let debounceTimer; 
+
+// 🌟 解決樣式：建立一個專屬小幫手，幫我們填寫欄位並「統一字體大小」
+function fillField(form, fieldName, elementId) {
+    try {
+        const field = form.getTextField(fieldName);
+        const inputElement = document.getElementById(elementId);
+        
+        // 確保欄位跟輸入框都存在，才把值寫進去
+        if (field && inputElement) {
+            field.setText(inputElement.value);
+            // 強制將所有字體大小統一為 10 (你可以依據喜好改成 11 或 12)
+            field.setFontSize(10); 
+        }
+    } catch (e) {
+        // 忽略找不到欄位的錯誤
+    }
+}
 
 async function init() {
     try {
-        // 同時抓取 PDF 檔案與字型檔案
         const [pdfResponse, fontResponse] = await Promise.all([
             fetch(pdfUrl),
             fetch(fontUrl)
         ]);
         
         originalPdfBytes = await pdfResponse.arrayBuffer();
-        originalFontBytes = await fontResponse.arrayBuffer(); // 取得字型位元組
+        originalFontBytes = await fontResponse.arrayBuffer();
 
         await updatePreview();
 
-        document.getElementById('pdfForm').addEventListener('input', updatePreview);
+        // 🌟 解決延遲：改用「防抖 (Debounce)」機制來監聽輸入
+        document.getElementById('pdfForm').addEventListener('input', () => {
+            clearTimeout(debounceTimer); // 如果你還在連續打字，就取消上一次的倒數
+            debounceTimer = setTimeout(updatePreview, 500); // 等你停下手 0.5 秒後，才更新 PDF
+        });
+
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
 
     } catch (error) {
-        console.error("載入發生錯誤，請確認 PDF 與字型檔是否都在同一個資料夾:", error);
+        console.error("載入發生錯誤:", error);
     }
 }
 
@@ -34,35 +55,19 @@ async function updatePreview() {
     if (!originalPdfBytes || !originalFontBytes) return;
 
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
-    
-    // 👇 註冊 fontkit 並嵌入我們的中文字型
     pdfDoc.registerFontkit(window.fontkit);
     const customFont = await pdfDoc.embedFont(originalFontBytes);
-
     const form = pdfDoc.getForm();
 
-    try {
-        const applicantField = form.getTextField('fill_16');
-        if (applicantField) applicantField.setText(document.getElementById('applicantName').value);
+    // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
+    fillField(form, 'fill_16', 'applicantName');
+    fillField(form, 'fill_17', 'applicantId');
+    fillField(form, 'fill_18', 'applicantBirthday');
+    fillField(form, 'fill_19', 'applicantOccupation');
+    fillField(form, 'Text8', 'insuranceCompany');
 
-        const idField = form.getTextField('fill_17');
-        if (idField) idField.setText(document.getElementById('applicantId').value);
-
-        const birthdayField = form.getTextField('fill_18');
-        if (birthdayField) birthdayField.setText(document.getElementById('applicantBirthday').value);
-
-        const occupationField = form.getTextField('fill_19');
-        if (occupationField) occupationField.setText(document.getElementById('applicantOccupation').value);
-
-        const companyField = form.getTextField('Text8');
-        if (companyField) companyField.setText(document.getElementById('insuranceCompany').value);
-
-        // 🌟 最關鍵的一步：將整個表單的字體外觀更新為我們的中文字體
-        form.updateFieldAppearances(customFont);
-
-    } catch (e) {
-        console.error("填寫欄位時發生錯誤", e);
-    }
+    // 套用中文字型
+    form.updateFieldAppearances(customFont);
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -78,27 +83,17 @@ async function downloadPDF() {
     const customFont = await pdfDoc.embedFont(originalFontBytes);
     const form = pdfDoc.getForm();
 
-    try {
-        // 下載前執行相同的填入邏輯
-        const applicantField = form.getTextField('fill_16');
-        if (applicantField) applicantField.setText(document.getElementById('applicantName').value);
+    // 下載時也一樣套用乾淨的寫法
+    fillField(form, 'fill_16', 'applicantName');
+    fillField(form, 'fill_17', 'applicantId');
+    fillField(form, 'fill_18', 'applicantBirthday');
+    fillField(form, 'fill_19', 'applicantOccupation');
+    fillField(form, 'Text8', 'insuranceCompany');
 
-        const idField = form.getTextField('fill_17');
-        if (idField) idField.setText(document.getElementById('applicantId').value);
-
-        const birthdayField = form.getTextField('fill_18');
-        if (birthdayField) birthdayField.setText(document.getElementById('applicantBirthday').value);
-
-        const occupationField = form.getTextField('fill_19');
-        if (occupationField) occupationField.setText(document.getElementById('applicantOccupation').value);
-
-        const companyField = form.getTextField('Text8');
-        if (companyField) companyField.setText(document.getElementById('insuranceCompany').value);
-
-        // 更新字體並將表單鎖死
-        form.updateFieldAppearances(customFont);
-        form.flatten(); 
-    } catch(e) {}
+    form.updateFieldAppearances(customFont);
+    
+    // 鎖死表單，讓下載後的 PDF 無法再被編輯
+    form.flatten(); 
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
