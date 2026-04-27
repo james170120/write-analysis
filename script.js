@@ -186,8 +186,8 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_25', 'c_spec_yes');
 
     // 6. 是否已有投保其他 (這兩個在 PDF 建立時順序被先拉了)
-    fillCheckbox(form, 'toggle_17', 'c_has_other_yes');
-    fillCheckbox(form, 'toggle_18', 'c_has_other_no');
+    fillCheckbox(form, 'toggle_20', 'c_has_other_yes');
+    fillCheckbox(form, 'toggle_21', 'c_has_other_no');
 
     // 7. 欲投保險種
     fillCheckbox(form, 'toggle_26', 'c_type_1');
