@@ -1,5 +1,5 @@
 const { PDFDocument, TextAlignment, PDFName, StandardFonts } = PDFLib;
-
+const DEBUG_MODE = true;
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-Regular.ttf';
 
@@ -72,15 +72,44 @@ async function updatePreview() {
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
     pdfDoc.registerFontkit(window.fontkit);
     
+    // 載入字型
     const customFont = await pdfDoc.embedFont(originalFontBytes);
     const helveticaFont = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
     const form = pdfDoc.getForm();
+    const fields = form.getFields();
 
-    applyFormData(form, customFont, helveticaFont);
+    if (DEBUG_MODE) {
+        console.log("=== 你的 PDF 欄位名稱列表 ===");
+        fields.forEach(field => {
+            const name = field.getName();
+            console.log(name); // 同時會在 F12 的 Console 印出清單
 
+            try {
+                // 1. 如果是文字框，就把名稱印在格子裡
+                const textField = form.getTextField(name);
+                textField.setText(name);
+                textField.setFontSize(8); // 字縮小一點才塞得下名稱
+            } catch (e) {
+                // 2. 如果是打勾方塊，我們讓它自動打勾，方便你在圖上對應位置
+                try {
+                    const checkBox = form.getCheckBox(name);
+                    checkBox.check();
+                } catch (err) {}
+            }
+        });
+    } else {
+        // 這裡放你原本寫好的正式填寫邏輯 (fillField 等等)
+        fillField(form, 'fill_16', 'applicantName', customFont);
+        fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
+        // ... 以此類推
+    }
+
+    // 更新外觀並顯示
+    form.updateFieldAppearances(customFont);
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    document.getElementById('pdfPreview').src = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
+    document.getElementById('pdfPreview').src = url;
 }
 
 async function downloadPDF() {
