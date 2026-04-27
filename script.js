@@ -9,15 +9,20 @@ let originalFontBytes = null;
 // 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-// 🌟 更新小幫手：加入 fontSize 參數，預設為 10
+// 🌟 更新小幫手：加入解除「梳理」的魔法
 function fillField(form, fieldName, elementId, fontSize = 10) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
+            // 👇 關鍵這行：關閉 PDF 的「字元梳理(Comb)」設定，讓文字回歸一般間距
+            if (typeof field.disableCombing === 'function') {
+                field.disableCombing();
+            }
+
             field.setText(inputElement.value);
-            // 如果 fontSize 有給定數值，才強制設定大小；如果設為 null 則讓 PDF 自動判斷
+            // 強制將字體大小設定為指定的數值
             if (fontSize !== null) {
                 field.setFontSize(fontSize); 
             }
