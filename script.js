@@ -1,4 +1,4 @@
-const { PDFDocument } = PDFLib;
+const { PDFDocument, TextAlignment } = PDFLib;
 
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-VariableFont_wght.ttf';
@@ -9,26 +9,30 @@ let originalFontBytes = null;
 // 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-// 🌟 更新小幫手：加入解除「梳理」的魔法
-function fillField(form, fieldName, elementId, fontSize = 10) {
+// 🌟 加入第五個參數 align，預設為 null (不特別更動)
+function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // 👇 關鍵這行：關閉 PDF 的「字元梳理(Comb)」設定，讓文字回歸一般間距
             if (typeof field.disableCombing === 'function') {
                 field.disableCombing();
             }
 
+            // 👇 關鍵新增：如果有指定對齊方向，就強制套用
+            if (align !== null) {
+                field.setAlignment(align);
+            }
+
             field.setText(inputElement.value);
-            // 強制將字體大小設定為指定的數值
+
             if (fontSize !== null) {
                 field.setFontSize(fontSize); 
             }
         }
     } catch (e) {
-        // 忽略找不到欄位的錯誤
+        // 忽略錯誤
     }
 }
 
@@ -67,7 +71,8 @@ async function updatePreview() {
 
     // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
     fillField(form, 'fill_16', 'applicantName');
-    fillField(form, 'fill_17', 'applicantId', 8);
+    // 👇 第五個參數加上 TextAlignment.Right，強制靠右對齊！
+    fillField(form, 'fill_17', 'applicantId', 10, TextAlignment.Left);
     fillField(form, 'fill_18', 'applicantBirthday');
     fillField(form, 'fill_19', 'applicantOccupation');
     fillField(form, 'Text8', 'insuranceCompany');
