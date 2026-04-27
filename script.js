@@ -156,10 +156,10 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'Check Box4', 'c_cat_travel');
 
     // 🌟 2. 最容易錯位的性別 (被排在底層最後面的獨立 Check Box)
-    fillCheckbox(form, 'Check Box24', 'c_app_m');
-    fillCheckbox(form, 'Check Box25', 'c_app_f');
-    fillCheckbox(form, 'Check Box26', 'c_ins_m');
-    fillCheckbox(form, 'Check Box27', 'c_ins_f');
+    fillCheckbox(form, 'Check Box25', 'c_app_m');
+    fillCheckbox(form, 'Check Box26', 'c_app_f');
+    fillCheckbox(form, 'Check Box27', 'c_ins_m');
+    fillCheckbox(form, 'Check Box24', 'c_ins_f');
 
     // 3. 基本資料與關係
     fillCheckbox(form, 'toggle_4', 'c_same_app');
