@@ -15,26 +15,29 @@ function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // ☢️ 核彈級清除魔法：直接把 PDF 底層的「所有」隱藏規則全部抹除
-            field.acroField.dict.delete(PDFName.of('MaxLen')); // 刪除最大字數限制
-            field.acroField.dict.delete(PDFName.of('Ff'));     // 刪除所有欄位旗標 (徹底消滅梳理、自動排版等隱藏機制)
-            field.acroField.dict.delete(PDFName.of('Q'));      // 刪除舊的對齊規則
+            // 1. 保留我們之前的核彈級清除
+            field.acroField.dict.delete(PDFName.of('MaxLen'));
+            field.acroField.dict.delete(PDFName.of('Ff'));
+            field.acroField.dict.delete(PDFName.of('Q'));
 
-            // 重新賦予我們要的對齊方向 (因為前面被刪掉了，所以這裡重新建立)
+            // 👇 2. 終極絕招：強迫欄位變成「多行模式」！
+            // 這會騙過 pdf-lib，讓它放棄使用單行欄位那套有 bug 的排版邏輯
+            field.enableMultiline();
+
+            // 3. 設定對齊方向
             if (align !== null) {
                 field.setAlignment(align);
             }
 
-            // 填寫文字
+            // 4. 寫入文字與設定大小
             field.setText(inputElement.value);
 
-            // 設定字體大小
             if (fontSize !== null) {
                 field.setFontSize(fontSize); 
             }
         }
     } catch (e) {
-        // 忽略找不到欄位的錯誤
+        // 忽略錯誤
     }
 }
 
