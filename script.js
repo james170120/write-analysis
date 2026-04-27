@@ -171,15 +171,15 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_10', 'c_rel_6');
 
     // 4. 投保目的及需求
-    fillCheckbox(form, 'toggle_12', 'c_need_1');
-    fillCheckbox(form, 'toggle_13', 'c_need_2');
-    fillCheckbox(form, 'toggle_14', 'c_need_3');
-    fillCheckbox(form, 'toggle_15', 'c_need_4');
-    fillCheckbox(form, 'toggle_16', 'c_need_5');
-    fillCheckbox(form, 'toggle_20', 'c_need_6');
-    fillCheckbox(form, 'toggle_21', 'c_need_7');
-    fillCheckbox(form, 'toggle_22', 'c_need_8');
-    fillCheckbox(form, 'toggle_23', 'c_need_9');
+    fillCheckbox(form, 'toggle_11', 'c_need_1');
+    fillCheckbox(form, 'toggle_12', 'c_need_2');
+    fillCheckbox(form, 'toggle_13', 'c_need_3');
+    fillCheckbox(form, 'toggle_14', 'c_need_4');
+    fillCheckbox(form, 'toggle_15', 'c_need_5');
+    fillCheckbox(form, 'toggle_16', 'c_need_6');
+    fillCheckbox(form, 'toggle_17', 'c_need_7');
+    fillCheckbox(form, 'toggle_18', 'c_need_8');
+    fillCheckbox(form, 'toggle_19', 'c_need_9');
 
     // 5. 指定保險公司
     fillCheckbox(form, 'toggle_24', 'c_spec_no');
