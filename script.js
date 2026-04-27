@@ -9,17 +9,18 @@ let originalFontBytes = null;
 // 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-// 🌟 解決樣式：建立一個專屬小幫手，幫我們填寫欄位並「統一字體大小」
-function fillField(form, fieldName, elementId) {
+// 🌟 更新小幫手：加入 fontSize 參數，預設為 10
+function fillField(form, fieldName, elementId, fontSize = 10) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
-        // 確保欄位跟輸入框都存在，才把值寫進去
         if (field && inputElement) {
             field.setText(inputElement.value);
-            // 強制將所有字體大小統一為 10 (你可以依據喜好改成 11 或 12)
-            field.setFontSize(10); 
+            // 如果 fontSize 有給定數值，才強制設定大小；如果設為 null 則讓 PDF 自動判斷
+            if (fontSize !== null) {
+                field.setFontSize(fontSize); 
+            }
         }
     } catch (e) {
         // 忽略找不到欄位的錯誤
@@ -61,7 +62,7 @@ async function updatePreview() {
 
     // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
     fillField(form, 'fill_16', 'applicantName');
-    fillField(form, 'fill_17', 'applicantId');
+    fillField(form, 'fill_17', 'applicantId', 8);
     fillField(form, 'fill_18', 'applicantBirthday');
     fillField(form, 'fill_19', 'applicantOccupation');
     fillField(form, 'Text8', 'insuranceCompany');
