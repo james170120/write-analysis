@@ -15,27 +15,26 @@ function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // 1. 強制關閉「梳理」格式
-            if (typeof field.disableCombing === 'function') {
-                field.disableCombing();
-            }
+            // ☢️ 核彈級清除魔法：直接把 PDF 底層的「所有」隱藏規則全部抹除
+            field.acroField.dict.delete(PDFName.of('MaxLen')); // 刪除最大字數限制
+            field.acroField.dict.delete(PDFName.of('Ff'));     // 刪除所有欄位旗標 (徹底消滅梳理、自動排版等隱藏機制)
+            field.acroField.dict.delete(PDFName.of('Q'));      // 刪除舊的對齊規則
 
-            // 2. 強制刪除底層的「最大字數限制」，防止引擎誤判
-            field.acroField.dict.delete(PDFName.of('MaxLen'));
-
-            // 3. 強制設定我們想要的對齊方向
+            // 重新賦予我們要的對齊方向 (因為前面被刪掉了，所以這裡重新建立)
             if (align !== null) {
                 field.setAlignment(align);
             }
 
+            // 填寫文字
             field.setText(inputElement.value);
 
+            // 設定字體大小
             if (fontSize !== null) {
                 field.setFontSize(fontSize); 
             }
         }
     } catch (e) {
-        // 忽略錯誤
+        // 忽略找不到欄位的錯誤
     }
 }
 
