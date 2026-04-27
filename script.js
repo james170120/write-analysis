@@ -1,4 +1,4 @@
-const { PDFDocument, TextAlignment, PDFName } = PDFLib;
+const { PDFDocument, TextAlignment, PDFName, StandardFonts } = PDFLib;
 
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-Regular.ttf';
@@ -9,37 +9,24 @@ let originalFontBytes = null;
 // 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
+// 🌟 加入第四個參數 targetFont
+function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // 1. 放棄暴力刪除，改用官方 API (這會同時深層清除資料層與視覺層的設定)
+            // 清除干擾機關
             field.removeMaxLength();
-            if (typeof field.disableCombing === 'function') {
-                field.disableCombing();
-            }
-            field.disableMultiline(); // 確保關閉多行模式，讓文字回到同一基準線
+            if (typeof field.disableCombing === 'function') field.disableCombing();
+            if (align !== null) field.setAlignment(align);
 
-            // 2. 強制設定對齊方向
-            if (align !== null) {
-                field.setAlignment(align);
-            }
+            // 寫入文字與設定大小
+            field.setText(inputElement.value);
+            if (fontSize !== null) field.setFontSize(fontSize); 
 
-            // 👇 3. 終極障眼法：在文字最後面加上一個「半形空白」
-            // 只要加了這個空白，pdf-lib 的公式就會被打破，強迫它把這串字當作普通句子，乖乖靠左排好！
-            let finalValue = inputElement.value;
-            if (finalValue !== '') {
-                finalValue = finalValue + ' '; // 偷偷加一個空白
-            }
-            
-            field.setText(finalValue);
-
-            // 4. 設定字體大小
-            if (fontSize !== null) {
-                field.setFontSize(fontSize); 
-            }
+            // 👇 最關鍵：直接針對這個欄位更新字型與外觀
+            field.updateAppearances(targetFont);
         }
     } catch (e) {
         // 忽略錯誤
@@ -76,19 +63,26 @@ async function updatePreview() {
 
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
     pdfDoc.registerFontkit(window.fontkit);
+    
+    // 1. 載入中文字型 (給名字、公司用)
     const customFont = await pdfDoc.embedFont(originalFontBytes);
+    // 2. 載入標準英文字型 (專門給身分證用，拯救排版！)
+    const helveticaFont = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
+    
     const form = pdfDoc.getForm();
 
-    // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
-    fillField(form, 'fill_16', 'applicantName');
-    // 👇 第五個參數加上 TextAlignment.Right，強制靠右對齊！
-    fillField(form, 'fill_17', 'applicantId', 8, TextAlignment.Left);
-    fillField(form, 'fill_18', 'applicantBirthday');
-    fillField(form, 'fill_19', 'applicantOccupation');
-    fillField(form, 'Text8', 'insuranceCompany');
+    // 🌟 依照欄位特性，分配不同的字型給小幫手
+    fillField(form, 'fill_16', 'applicantName', customFont);
+    
+    // 👇 身分證專屬：換上 helveticaFont，並且靠左對齊
+    fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
+    
+    fillField(form, 'fill_18', 'applicantBirthday', customFont);
+    fillField(form, 'fill_19', 'applicantOccupation', customFont);
+    fillField(form, 'Text8', 'insuranceCompany', customFont);
 
-    // 套用中文字型
-    form.updateFieldAppearances(customFont);
+    // ⚠️ 這裡原本有一行 form.updateFieldAppearances(customFont); 請務必刪除！
+    // 因為我們已經在 fillField 裡面針對每個欄位單獨更新了，這樣才不會互相覆蓋。
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
