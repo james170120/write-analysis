@@ -1,7 +1,7 @@
 const { PDFDocument, TextAlignment, PDFName } = PDFLib;
 
 const pdfUrl = './書面分析報告輸入版.pdf';
-const fontUrl = './NotoSansTC-VariableFont_wght.ttf';
+const fontUrl = './NotoSansTC-Regular.ttf';
 
 let originalPdfBytes = null;
 let originalFontBytes = null;
