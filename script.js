@@ -5,8 +5,8 @@ let originalPdfBytes = null;
 
 // 💡 測試模式開關：
 // 設為 true 時，會在 PDF 的每個文字框填入它的「欄位名稱」，方便你找對應關係。
-// 找完之後，把它改成 false 就可以恢復正常的連動輸入功能。
-const DEBUG_MODE = true; 
+// 💡 將這裡改成 false，關閉測試模式，恢復正常預覽
+const DEBUG_MODE = false;
 
 async function init() {
     try {
@@ -47,16 +47,27 @@ async function updatePreview() {
             }
         });
     } else {
-        // 【正式模式】這裡是你未來要對應真實資料的地方
+        // 【正式模式】
         try {
-            // 👇 這裡請把 'fill_XX' 換成你透過測試模式找到的正確名稱
-            const applicantField = form.getTextField('fill_16'); // 假設 fill_16 是要保人
-            const applicantValue = document.getElementById('applicantName').value;
-            if (applicantField) applicantField.setText(applicantValue);
+            // 要保人姓名 (fill_16)
+            const applicantField = form.getTextField('fill_16');
+            if (applicantField) applicantField.setText(document.getElementById('applicantName').value);
 
-            const companyField = form.getTextField('Text5'); // 假設 Text5 是保險公司
-            const companyValue = document.getElementById('insuranceCompany').value;
-            if (companyField) companyField.setText(companyValue);
+            // 身分證字號 (fill_17)
+            const idField = form.getTextField('fill_17');
+            if (idField) idField.setText(document.getElementById('applicantId').value);
+
+            // 生日 (fill_18)
+            const birthdayField = form.getTextField('fill_18');
+            if (birthdayField) birthdayField.setText(document.getElementById('applicantBirthday').value);
+
+            // 職業 (fill_19)
+            const occupationField = form.getTextField('fill_19');
+            if (occupationField) occupationField.setText(document.getElementById('applicantOccupation').value);
+
+            // 保險公司名稱① (Text8)
+            const companyField = form.getTextField('Text8');
+            if (companyField) companyField.setText(document.getElementById('insuranceCompany').value);
 
         } catch (e) {
             console.error("填寫欄位時發生錯誤", e);
