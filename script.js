@@ -35,13 +35,15 @@ async function updatePreview() {
         // 【測試模式】將每個文字欄位的名稱，直接填入該欄位中
         fields.forEach(field => {
             const name = field.getName();
-            // 判斷是否為文字輸入框 (排除 CheckBox 等)
-            if (field.constructor.name === 'PDFTextField') {
-                try {
-                    field.setText(name);
-                } catch (e) {
-                    console.warn(`無法寫入欄位: ${name}`);
-                }
+            try {
+                // 直接嘗試將它當作文字欄位來操作
+                // 如果它剛好是打勾方塊或其他欄位，這行會報錯並被下方的 catch 捕捉忽略
+                const textField = form.getTextField(name);
+                textField.setText(name);
+                // 可以把字體稍微設小一點，避免名稱太長塞不進格子裡
+                textField.setFontSize(10); 
+            } catch (e) {
+                // 忽略非文字欄位
             }
         });
     } else {
