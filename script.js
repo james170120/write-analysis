@@ -146,114 +146,125 @@ function applyFormData(form, customFont, helveticaFont) {
     fillField(form, 'Text18', 't_date_m', helveticaFont, 10, TextAlignment.Center);
     fillField(form, 'Text19', 't_date_d', helveticaFont, 10, TextAlignment.Center);
 
-    // ------------------- 【打勾方塊區】 -------------------
+    // ---------------------------------------------------------
+    // ✅ 【打勾方塊對應區】(完美校正版)
+    // ---------------------------------------------------------
+    
+    // 1. 頂部報告書類別
     fillCheckbox(form, 'Check Box2', 'c_cat_life');
     fillCheckbox(form, 'Check Box3', 'c_cat_prop');
     fillCheckbox(form, 'Check Box4', 'c_cat_travel');
 
-    fillCheckbox(form, 'toggle_4', 'c_app_m');
-    fillCheckbox(form, 'toggle_5', 'c_app_f');
-    fillCheckbox(form, 'toggle_6', 'c_same_app');
-    fillCheckbox(form, 'toggle_7', 'c_ins_m');
-    fillCheckbox(form, 'toggle_8', 'c_ins_f');
-    fillCheckbox(form, 'toggle_9', 'c_rel_1');
-    fillCheckbox(form, 'toggle_11', 'c_rel_2');
-    fillCheckbox(form, 'toggle_12', 'c_rel_3');
-    fillCheckbox(form, 'toggle_13', 'c_rel_4');
-    fillCheckbox(form, 'toggle_14', 'c_rel_5');
-    fillCheckbox(form, 'toggle_15', 'c_rel_6');
+    // 🌟 2. 最容易錯位的性別 (被排在底層最後面的獨立 Check Box)
+    fillCheckbox(form, 'Check Box24', 'c_app_m');
+    fillCheckbox(form, 'Check Box25', 'c_app_f');
+    fillCheckbox(form, 'Check Box26', 'c_ins_m');
+    fillCheckbox(form, 'Check Box27', 'c_ins_f');
 
-    fillCheckbox(form, 'toggle_16', 'c_need_1');
-    fillCheckbox(form, 'toggle_20', 'c_need_2');
-    fillCheckbox(form, 'toggle_21', 'c_need_3');
-    fillCheckbox(form, 'toggle_22', 'c_need_4');
-    fillCheckbox(form, 'toggle_23', 'c_need_5');
-    fillCheckbox(form, 'toggle_24', 'c_need_6');
-    fillCheckbox(form, 'toggle_25', 'c_need_7');
-    fillCheckbox(form, 'toggle_17', 'c_need_8');
-    fillCheckbox(form, 'toggle_18', 'c_need_9');
+    // 3. 基本資料與關係
+    fillCheckbox(form, 'toggle_4', 'c_same_app');
+    fillCheckbox(form, 'toggle_5', 'c_rel_1');
+    fillCheckbox(form, 'toggle_6', 'c_rel_2');
+    fillCheckbox(form, 'toggle_7', 'c_rel_3');
+    fillCheckbox(form, 'toggle_8', 'c_rel_4');
+    fillCheckbox(form, 'toggle_9', 'c_rel_5');
+    fillCheckbox(form, 'toggle_11', 'c_rel_6');
 
-    fillCheckbox(form, 'toggle_26', 'c_spec_no');
-    fillCheckbox(form, 'toggle_27', 'c_spec_yes');
+    // 4. 投保目的及需求
+    fillCheckbox(form, 'toggle_12', 'c_need_1');
+    fillCheckbox(form, 'toggle_13', 'c_need_2');
+    fillCheckbox(form, 'toggle_14', 'c_need_3');
+    fillCheckbox(form, 'toggle_15', 'c_need_4');
+    fillCheckbox(form, 'toggle_16', 'c_need_5');
+    fillCheckbox(form, 'toggle_20', 'c_need_6');
+    fillCheckbox(form, 'toggle_21', 'c_need_7');
+    fillCheckbox(form, 'toggle_22', 'c_need_8');
+    fillCheckbox(form, 'toggle_23', 'c_need_9');
 
-    fillCheckbox(form, 'toggle_28', 'c_type_1');
-    fillCheckbox(form, 'toggle_29', 'c_type_2');
-    fillCheckbox(form, 'toggle_30', 'c_type_3');
-    fillCheckbox(form, 'toggle_31', 'c_type_4');
-    fillCheckbox(form, 'toggle_33', 'c_type_5');
-    fillCheckbox(form, 'toggle_34', 'c_type_6');
-    fillCheckbox(form, 'toggle_35', 'c_type_7');
-    fillCheckbox(form, 'toggle_36', 'c_type_8');
-    fillCheckbox(form, 'toggle_37', 'c_type_9');
-    fillCheckbox(form, 'toggle_38', 'c_type_10');
-    fillCheckbox(form, 'toggle_39', 'c_type_11');
+    // 5. 指定保險公司
+    fillCheckbox(form, 'toggle_24', 'c_spec_no');
+    fillCheckbox(form, 'toggle_25', 'c_spec_yes');
 
-    fillCheckbox(form, 'toggle_40', 'c_has_other_yes');
-    fillCheckbox(form, 'toggle_42', 'c_has_other_no');
+    // 6. 是否已有投保其他 (這兩個在 PDF 建立時順序被先拉了)
+    fillCheckbox(form, 'toggle_17', 'c_has_other_yes');
+    fillCheckbox(form, 'toggle_18', 'c_has_other_no');
 
-    fillCheckbox(form, 'toggle_44', 'c_pay_1');
-    fillCheckbox(form, 'toggle_46', 'c_pay_2');
-    fillCheckbox(form, 'toggle_48', 'c_pay_3');
-    fillCheckbox(form, 'toggle_50', 'c_pay_4');
-    fillCheckbox(form, 'toggle_41', 'c_pay_5');
+    // 7. 欲投保險種
+    fillCheckbox(form, 'toggle_26', 'c_type_1');
+    fillCheckbox(form, 'toggle_27', 'c_type_2');
+    fillCheckbox(form, 'toggle_28', 'c_type_3');
+    fillCheckbox(form, 'toggle_29', 'c_type_4');
+    fillCheckbox(form, 'toggle_30', 'c_type_5');
+    fillCheckbox(form, 'toggle_31', 'c_type_6');
+    fillCheckbox(form, 'toggle_33', 'c_type_7');
+    fillCheckbox(form, 'toggle_34', 'c_type_8');
+    fillCheckbox(form, 'toggle_35', 'c_type_9');
+    fillCheckbox(form, 'toggle_36', 'c_type_10');
+    fillCheckbox(form, 'toggle_37', 'c_type_11');
 
-    fillCheckbox(form, 'toggle_43', 'c_cur_1');
-    fillCheckbox(form, 'toggle_45', 'c_cur_2');
-    fillCheckbox(form, 'toggle_47', 'c_cur_3');
+    // 8. 幣別
+    fillCheckbox(form, 'toggle_38', 'c_cur_1');
+    fillCheckbox(form, 'toggle_39', 'c_cur_2');
+    fillCheckbox(form, 'toggle_40', 'c_cur_3');
 
-    fillCheckbox(form, 'toggle_49', 'c_ret_1');
-    fillCheckbox(form, 'toggle_51', 'c_ret_2');
-    fillCheckbox(form, 'toggle_52', 'c_ret_3');
-    fillCheckbox(form, 'toggle_54', 'c_ret_4');
-    fillCheckbox(form, 'toggle_55', 'c_ret_5');
-    fillCheckbox(form, 'toggle_56', 'c_ret_6');
-    fillCheckbox(form, 'toggle_57', 'c_ret_7');
+    // 9. 繳費方式 (直行跳號規律 42, 44...)
+    fillCheckbox(form, 'toggle_42', 'c_pay_1');
+    fillCheckbox(form, 'toggle_44', 'c_pay_2');
+    fillCheckbox(form, 'toggle_46', 'c_pay_3');
+    fillCheckbox(form, 'toggle_48', 'c_pay_4');
+    fillCheckbox(form, 'toggle_50', 'c_pay_5');
 
-    fillCheckbox(form, 'toggle_58', 'c_src_1');
-    fillCheckbox(form, 'toggle_59', 'c_src_2');
-    fillCheckbox(form, 'toggle_60', 'c_src_3');
-    fillCheckbox(form, 'toggle_61', 'c_src_4');
-    fillCheckbox(form, 'toggle_62', 'c_src_5');
-    fillCheckbox(form, 'toggle_63', 'c_src_6');
-    fillCheckbox(form, 'toggle_64', 'c_src_7');
+    // 10. 剩餘年期 (直行跳號規律 41, 43...)
+    fillCheckbox(form, 'toggle_41', 'c_ret_1');
+    fillCheckbox(form, 'toggle_43', 'c_ret_2');
+    fillCheckbox(form, 'toggle_45', 'c_ret_3');
+    fillCheckbox(form, 'toggle_47', 'c_ret_4');
+    fillCheckbox(form, 'toggle_49', 'c_ret_5');
+    fillCheckbox(form, 'toggle_51', 'c_ret_6');
+    fillCheckbox(form, 'toggle_52', 'c_ret_7');
 
-    fillCheckbox(form, 'toggle_65', 'c_old_app_y');
-    fillCheckbox(form, 'toggle_66', 'c_old_app_n');
-    fillCheckbox(form, 'toggle_67', 'c_old_ins_y');
-    fillCheckbox(form, 'toggle_68', 'c_old_ins_n');
-    fillCheckbox(form, 'toggle_69', 'c_old_auth_y');
-    fillCheckbox(form, 'toggle_71', 'c_old_auth_n');
+    // 11. 來源
+    fillCheckbox(form, 'toggle_54', 'c_src_1');
+    fillCheckbox(form, 'toggle_55', 'c_src_2');
+    fillCheckbox(form, 'toggle_56', 'c_src_3');
+    fillCheckbox(form, 'toggle_57', 'c_src_4');
+    fillCheckbox(form, 'toggle_58', 'c_src_5');
+    fillCheckbox(form, 'toggle_59', 'c_src_6');
+    fillCheckbox(form, 'toggle_60', 'c_src_7');
 
-    fillCheckbox(form, 'toggle_72', 'c_inv_1');
-    fillCheckbox(form, 'toggle_73', 'c_inv_2');
-    fillCheckbox(form, 'toggle_75', 'c_inv_3');
-    fillCheckbox(form, 'toggle_76', 'c_fx_y');
-    fillCheckbox(form, 'toggle_77', 'c_fx_n');
+    // 12. 高齡客戶
+    fillCheckbox(form, 'toggle_61', 'c_old_app_y');
+    fillCheckbox(form, 'toggle_62', 'c_old_app_n');
+    fillCheckbox(form, 'toggle_63', 'c_old_ins_y');
+    fillCheckbox(form, 'toggle_64', 'c_old_ins_n');
+    fillCheckbox(form, 'toggle_65', 'c_old_auth_y');
+    fillCheckbox(form, 'toggle_66', 'c_old_auth_n');
 
-    fillCheckbox(form, 'toggle_78', 'c_prov_1');
-    fillCheckbox(form, 'toggle_79', 'c_prov_2');
+    // 13. 投資型與外幣
+    fillCheckbox(form, 'toggle_67', 'c_inv_1');
+    fillCheckbox(form, 'toggle_68', 'c_inv_2');
+    fillCheckbox(form, 'toggle_69', 'c_inv_3');
+    fillCheckbox(form, 'toggle_71', 'c_fx_y');
+    fillCheckbox(form, 'toggle_72', 'c_fx_n');
 
-    fillCheckbox(form, 'toggle_80', 'c_prod_1');
-    fillCheckbox(form, 'toggle_81', 'c_prod_2');
-    fillCheckbox(form, 'toggle_82', 'c_term_1');
-    fillCheckbox(form, 'toggle_83', 'c_cov_1');
-    fillCheckbox(form, 'toggle_84', 'c_cov_2');
+    // 14. 業務員建議
+    fillCheckbox(form, 'toggle_75', 'c_prov_1');
+    fillCheckbox(form, 'toggle_76', 'c_prov_2');
+    fillCheckbox(form, 'toggle_77', 'c_prod_1');
+    fillCheckbox(form, 'toggle_78', 'c_prod_2');
+    fillCheckbox(form, 'toggle_79', 'c_prod_3');
+    fillCheckbox(form, 'toggle_80', 'c_term_1');
+    fillCheckbox(form, 'toggle_81', 'c_cov_1');
+    fillCheckbox(form, 'toggle_82', 'c_cov_2');
+    fillCheckbox(form, 'toggle_83', 'c_cov_3');
 
-    fillCheckbox(form, 'toggle_85', 'c_rsn_1');
-    fillCheckbox(form, 'toggle_86', 'c_rsn_2');
-    fillCheckbox(form, 'toggle_87', 'c_rsn_3');
-    fillCheckbox(form, 'Check Box24', 'c_rsn_4');
-    fillCheckbox(form, 'Check Box25', 'c_rsn_5');
-
-    // 洗錢防制檢核表
-    fillCheckbox(form, 'Check Box26', 'c_aml_1'); // 地域 一般
-    fillCheckbox(form, 'Check Box27', 'c_aml_2'); // 地域 高
-    fillCheckbox(form, 'toggle_88', 'c_aml_3');   // 這些是 PDF 隱藏的推斷，如果沒連動可以回報
-    fillCheckbox(form, 'toggle_89', 'c_aml_4');
-    fillCheckbox(form, 'toggle_90', 'c_aml_5');
-    fillCheckbox(form, 'toggle_91', 'c_aml_6');
-    fillCheckbox(form, 'toggle_92', 'c_aml_7');
-    fillCheckbox(form, 'toggle_93', 'c_aml_8');
+    // 15. 建議理由
+    fillCheckbox(form, 'toggle_84', 'c_rsn_1');
+    fillCheckbox(form, 'toggle_85', 'c_rsn_2');
+    fillCheckbox(form, 'toggle_86', 'c_rsn_3');
+    fillCheckbox(form, 'toggle_87', 'c_rsn_4');
+    
+    // ⚠️ 備註：洗錢防制檢核表 & 理由的「其他」在 PDF 原始檔中並未建立對應的 Checkbox 欄位。
 }
 
 init();
