@@ -6,37 +6,100 @@
     <title>保險分析報告書編輯器</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+    <style>
+        /* 稍微優化一下左側的排版，讓區塊更清楚 */
+        fieldset { border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px; padding: 15px; background: #fff; }
+        legend { font-weight: bold; color: #2b7a78; background: #e8f4f4; padding: 5px 10px; border-radius: 4px; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .checkbox-group label { font-weight: normal; display: flex; align-items: center; }
+        .checkbox-group input { width: auto; margin-right: 5px; }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="left-panel">
             <h2>報告書輸入區</h2>
             <form id="pdfForm">
-    <div class="form-group">
-        <label for="applicantName">要保人姓名：</label>
-        <input type="text" id="applicantName" placeholder="例如：王小明">
-    </div>
-    <div class="form-group">
-        <label for="applicantId">身分證字號：</label>
-        <input type="text" id="applicantId" placeholder="例如：A123456789">
-    </div>
-    <div class="form-group">
-        <label for="applicantBirthday">生日：</label>
-        <input type="text" id="applicantBirthday" placeholder="例如：民國80年1月1日">
-    </div>
-    <div class="form-group">
-        <label for="applicantOccupation">職業：</label>
-        <input type="text" id="applicantOccupation" placeholder="例如：行政人員">
-    </div>
-    <div class="form-group">
-        <label for="insuranceCompany">保險公司名稱①：</label>
-        <input type="text" id="insuranceCompany" placeholder="請輸入公司名稱">
-    </div>
-</form>
+                
+                <fieldset>
+                    <legend>要保人資料</legend>
+                    <div class="form-group">
+                        <label for="applicantName">要保人姓名：</label>
+                        <input type="text" id="applicantName" placeholder="例如：王小明">
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantId">身分證字號：</label>
+                        <input type="text" id="applicantId" placeholder="例如：T123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantBirthday">生日：</label>
+                        <input type="text" id="applicantBirthday" placeholder="例如：0800101">
+                    </div>
+                    <div class="form-group">
+                        <label for="applicantOccupation">職業：</label>
+                        <input type="text" id="applicantOccupation" placeholder="例如：行政人員">
+                    </div>
+                    <div class="form-group">
+                        <label>性別：</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="appGenderMale"> 男</label>
+                            <label><input type="checkbox" id="appGenderFemale"> 女</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>被保人資料</legend>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="sameAsApplicant"> 同要保人</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="insuredName">被保人姓名：</label>
+                        <input type="text" id="insuredName" placeholder="例如：陳小美">
+                    </div>
+                    <div class="form-group">
+                        <label for="insuredId">身分證字號：</label>
+                        <input type="text" id="insuredId" placeholder="例如：A223456789">
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>本次投保目的及需求</legend>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="purpose1"> 保障需求</label>
+                            <label><input type="checkbox" id="purpose2"> 醫療給付</label>
+                            <label><input type="checkbox" id="purpose3"> 退休規劃</label>
+                            <label><input type="checkbox" id="purpose4"> 損害填補</label>
+                            </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>欲投保之保險種類</legend>
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="typeLife"> 壽險</label>
+                            <label><input type="checkbox" id="typeHealth"> 健康險</label>
+                            <label><input type="checkbox" id="typeAccident"> 傷害險</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>業務員建議與公司</legend>
+                    <div class="form-group">
+                        <label for="insuranceCompany">保險公司名稱①：</label>
+                        <input type="text" id="insuranceCompany" placeholder="請輸入公司名稱">
+                    </div>
+                </fieldset>
+
+            </form>
             <button id="downloadBtn">下載 PDF 報告書</button>
         </div>
-
         <div class="right-panel">
             <iframe id="pdfPreview" src=""></iframe>
         </div>
