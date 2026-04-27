@@ -1,4 +1,4 @@
-const { PDFDocument, TextAlignment } = PDFLib;
+const { PDFDocument, TextAlignment, PDFName } = PDFLib;
 
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-VariableFont_wght.ttf';
@@ -9,18 +9,21 @@ let originalFontBytes = null;
 // 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-// 🌟 加入第五個參數 align，預設為 null (不特別更動)
 function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
+            // 1. 強制關閉「梳理」格式
             if (typeof field.disableCombing === 'function') {
                 field.disableCombing();
             }
 
-            // 👇 關鍵新增：如果有指定對齊方向，就強制套用
+            // 2. 強制刪除底層的「最大字數限制」，防止引擎誤判
+            field.acroField.dict.delete(PDFName.of('MaxLen'));
+
+            // 3. 強制設定我們想要的對齊方向
             if (align !== null) {
                 field.setAlignment(align);
             }
@@ -72,7 +75,7 @@ async function updatePreview() {
     // 🌟 使用小幫手函式，程式碼變得超級乾淨！未來新增欄位只要複製貼上一行即可
     fillField(form, 'fill_16', 'applicantName');
     // 👇 第五個參數加上 TextAlignment.Right，強制靠右對齊！
-    fillField(form, 'fill_17', 'applicantId', 8, TextAlignment.Left);
+    fillField(form, 'fill_17', 'applicantId', 10, TextAlignment.Left);
     fillField(form, 'fill_18', 'applicantBirthday');
     fillField(form, 'fill_19', 'applicantOccupation');
     fillField(form, 'Text8', 'insuranceCompany');
@@ -96,7 +99,7 @@ async function downloadPDF() {
 
     // 下載時也一樣套用乾淨的寫法
     fillField(form, 'fill_16', 'applicantName');
-    fillField(form, 'fill_17', 'applicantId', 8, TextAlignment.Left);
+    fillField(form, 'fill_17', 'applicantId', 10, TextAlignment.Left);
     fillField(form, 'fill_18', 'applicantBirthday');
     fillField(form, 'fill_19', 'applicantOccupation');
     fillField(form, 'Text8', 'insuranceCompany');
