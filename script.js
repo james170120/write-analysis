@@ -7,7 +7,7 @@ let originalPdfBytes = null;
 let originalFontBytes = null;
 let debounceTimer; 
 
-// 🛡️ 終極文字專用小幫手 (自帶防呆、防散開、防多行Bug)
+// 🛡️ 防呆文字小幫手
 function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null) {
     try {
         const field = form.getTextField(fieldName);
@@ -20,9 +20,8 @@ function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align 
 
             if (align !== null) field.setAlignment(align);
 
-            // 隱形空白防呆法
             let finalValue = inputElement.value;
-            if (finalValue !== '') finalValue = finalValue + ' '; 
+            if (finalValue !== '') finalValue = finalValue + ' '; // 空白防呆
             
             field.setText(finalValue);
             if (fontSize !== null) field.setFontSize(fontSize); 
@@ -31,27 +30,20 @@ function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align 
     } catch (e) {}
 }
 
-// ✅ 打勾方塊專用小幫手
+// ✅ 打勾方塊小幫手
 function fillCheckbox(form, fieldName, elementId) {
     try {
         const field = form.getCheckBox(fieldName);
         const inputElement = document.getElementById(elementId);
-        
         if (field && inputElement) {
-            if (inputElement.checked) {
-                field.check();
-            } else {
-                field.uncheck();
-            }
+            inputElement.checked ? field.check() : field.uncheck();
         }
     } catch (e) {}
 }
 
 async function init() {
     try {
-        const [pdfResponse, fontResponse] = await Promise.all([
-            fetch(pdfUrl), fetch(fontUrl)
-        ]);
+        const [pdfResponse, fontResponse] = await Promise.all([ fetch(pdfUrl), fetch(fontUrl) ]);
         originalPdfBytes = await pdfResponse.arrayBuffer();
         originalFontBytes = await fontResponse.arrayBuffer();
         await updatePreview();
@@ -61,14 +53,11 @@ async function init() {
             debounceTimer = setTimeout(updatePreview, 600); 
         });
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
-    } catch (error) {
-        console.error("載入發生錯誤:", error);
-    }
+    } catch (error) { console.error("載入發生錯誤:", error); }
 }
 
 async function updatePreview() {
     if (!originalPdfBytes || !originalFontBytes) return;
-
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
     pdfDoc.registerFontkit(window.fontkit);
     
@@ -105,89 +94,166 @@ async function downloadPDF() {
     URL.revokeObjectURL(url);
 }
 
-// 📦 將所有資料填入的邏輯集中在這裡，方便預覽與下載共同呼叫
+// 📦 資料綁定核心
 function applyFormData(form, customFont, helveticaFont) {
-    // ---------------------------------------------------------
-    // 📝 【文字欄位對應區】(依照你提供的截圖對應)
-    // ---------------------------------------------------------
-    // 1. 基本資料
-    fillField(form, 'fill_16', 'app_name', customFont);
-    fillField(form, 'fill_17', 'app_id', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_18', 'app_birth', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_19', 'app_job', customFont);
+    // ------------------- 【文字輸入區】 -------------------
+    fillField(form, 'fill_16', 't_app_name', customFont);
+    fillField(form, 'fill_17', 't_app_id', helveticaFont, 10, TextAlignment.Left);
+    fillField(form, 'fill_18', 't_app_birth', helveticaFont, 10, TextAlignment.Left);
+    fillField(form, 'fill_19', 't_app_job', customFont);
     
-    fillField(form, 'fill_20', 'ins_name', customFont);
-    fillField(form, 'fill_21', 'ins_id', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_22', 'ins_birth', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_23', 'ins_job', customFont);
+    fillField(form, 'fill_20', 't_ins_name', customFont);
+    fillField(form, 'fill_21', 't_ins_id', helveticaFont, 10, TextAlignment.Left);
+    fillField(form, 'fill_22', 't_ins_birth', helveticaFont, 10, TextAlignment.Left);
+    fillField(form, 'fill_23', 't_ins_job', customFont);
     
-    fillField(form, 'fill_24', 'vehicle_plate', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_25', 'vehicle_type', customFont);
-    fillField(form, 'fill_1', 'relation_other', customFont); // 關係其他/建議其他
-
-    // 2. 需求與金額
-    fillField(form, 'fill_2', 'need_other', customFont);
-    fillField(form, 'fill_3', 'specify_company', customFont);
-    fillField(form, 'Text5', 'amt_1', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text7', 'unit_1', customFont, 10, TextAlignment.Center); // 圖上中間是 Text7
-    fillField(form, 'Text6', 'amt_2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_24', 't_car_plate', helveticaFont, 10, TextAlignment.Left);
+    fillField(form, 'fill_25', 't_car_type', customFont);
     
-    fillField(form, 'fill_4', 'period_y1', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'fill_5', 'period_m1', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'fill_6', 'period_d1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_1', 't_rel_other', customFont); // 關係/幣別 其他
+    fillField(form, 'fill_2', 't_need_other', customFont); // 需求其他/風險備註 (共用)
+    fillField(form, 'fill_3', 't_spec_company', customFont);
+    
+    fillField(form, 'Text5', 't_amt_1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text7', 't_amt_2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text6', 't_amt_3', helveticaFont, 10, TextAlignment.Center);
+    
+    fillField(form, 'fill_4', 't_y1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_5', 't_m1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_6', 't_d1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_7', 't_y2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_8', 't_m2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_9', 't_d2', helveticaFont, 10, TextAlignment.Center);
 
-    // 3. 保費與雜項
-    fillField(form, 'fill_10', 'premium_amt', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'fill_11', 'source_other', customFont);
-    fillField(form, 'fill_12', 'risk_other', customFont);
+    fillField(form, 'fill_10', 't_premium_amt', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'fill_11', 't_source_other', customFont);
+    fillField(form, 'fill_12', 't_risk_change', customFont);
 
-    // 4. 業務員建議
-    fillField(form, 'Text8', 'rec_comp_1', customFont);
-    fillField(form, 'Text11', 'rec_comp_2', customFont);
-    fillField(form, 'Text12', 'rec_comp_3', customFont);
-    fillField(form, 'fill_13', 'rec_prod_other', customFont);
-    fillField(form, 'Text9', 'rec_prem_1', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text15', 'rec_prem_2', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text16', 'rec_prem_3', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text10', 'rec_year_1', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text13', 'rec_year_2', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text14', 'rec_year_3', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text8', 't_rec_c1', customFont);
+    fillField(form, 'Text11', 't_rec_c2', customFont);
+    fillField(form, 'Text12', 't_rec_c3', customFont);
+    fillField(form, 'fill_13', 't_prod_other', customFont);
+    fillField(form, 'fill_14', 't_cov_other', customFont);
+    
+    fillField(form, 'Text9', 't_rec_p1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text15', 't_rec_p2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text16', 't_rec_p3', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text10', 't_rec_y1', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text13', 't_rec_y2', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text14', 't_rec_y3', helveticaFont, 10, TextAlignment.Center);
 
-    // 5. 日期
-    fillField(form, 'Text17', 'date_y', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text18', 'date_m', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'Text19', 'date_d', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text17', 't_date_y', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text18', 't_date_m', helveticaFont, 10, TextAlignment.Center);
+    fillField(form, 'Text19', 't_date_d', helveticaFont, 10, TextAlignment.Center);
 
-    // ---------------------------------------------------------
-    // ✅ 【打勾方塊對應區】(依照 Console 順序邏輯推算)
-    // ---------------------------------------------------------
-    // 頂部報告書類別 (通常在清單最後或最前，這裡使用常見命名推斷)
-    fillCheckbox(form, 'Check Box2', 'chk_cat1'); 
-    fillCheckbox(form, 'Check Box3', 'chk_cat2');
-    fillCheckbox(form, 'Check Box4', 'chk_cat3');
+    // ------------------- 【打勾方塊區】 -------------------
+    fillCheckbox(form, 'Check Box2', 'c_cat_life');
+    fillCheckbox(form, 'Check Box3', 'c_cat_prop');
+    fillCheckbox(form, 'Check Box4', 'c_cat_travel');
 
-    // 性別與同要保人
-    fillCheckbox(form, 'toggle_4', 'chk_app_m');
-    fillCheckbox(form, 'toggle_5', 'chk_app_f');
-    fillCheckbox(form, 'toggle_6', 'chk_same_app');
-    fillCheckbox(form, 'toggle_7', 'chk_ins_m');
-    fillCheckbox(form, 'toggle_8', 'chk_ins_f');
+    fillCheckbox(form, 'toggle_4', 'c_app_m');
+    fillCheckbox(form, 'toggle_5', 'c_app_f');
+    fillCheckbox(form, 'toggle_6', 'c_same_app');
+    fillCheckbox(form, 'toggle_7', 'c_ins_m');
+    fillCheckbox(form, 'toggle_8', 'c_ins_f');
+    fillCheckbox(form, 'toggle_9', 'c_rel_1');
+    fillCheckbox(form, 'toggle_11', 'c_rel_2');
+    fillCheckbox(form, 'toggle_12', 'c_rel_3');
+    fillCheckbox(form, 'toggle_13', 'c_rel_4');
+    fillCheckbox(form, 'toggle_14', 'c_rel_5');
+    fillCheckbox(form, 'toggle_15', 'c_rel_6');
 
-    // 投保目的及需求
-    fillCheckbox(form, 'toggle_20', 'chk_need1'); // 保障需求
-    fillCheckbox(form, 'toggle_21', 'chk_need2'); // 醫療給付
-    fillCheckbox(form, 'toggle_22', 'chk_need3'); // 退休規劃
-    fillCheckbox(form, 'toggle_23', 'chk_need4'); // 損害填補
-    fillCheckbox(form, 'toggle_24', 'chk_need5'); // 法令要求
-    fillCheckbox(form, 'toggle_25', 'chk_need6'); // 風險移轉
+    fillCheckbox(form, 'toggle_16', 'c_need_1');
+    fillCheckbox(form, 'toggle_20', 'c_need_2');
+    fillCheckbox(form, 'toggle_21', 'c_need_3');
+    fillCheckbox(form, 'toggle_22', 'c_need_4');
+    fillCheckbox(form, 'toggle_23', 'c_need_5');
+    fillCheckbox(form, 'toggle_24', 'c_need_6');
+    fillCheckbox(form, 'toggle_25', 'c_need_7');
+    fillCheckbox(form, 'toggle_17', 'c_need_8');
+    fillCheckbox(form, 'toggle_18', 'c_need_9');
 
-    // 投保險種
-    fillCheckbox(form, 'toggle_26', 'chk_type1'); // 壽險
-    fillCheckbox(form, 'toggle_27', 'chk_type2'); // 健康險
-    fillCheckbox(form, 'toggle_28', 'chk_type3'); // 傷害險
-    fillCheckbox(form, 'toggle_29', 'chk_type4'); // 失扶
-    fillCheckbox(form, 'toggle_30', 'chk_type5'); // 年金
-    fillCheckbox(form, 'toggle_31', 'chk_type6'); // 投資型
+    fillCheckbox(form, 'toggle_26', 'c_spec_no');
+    fillCheckbox(form, 'toggle_27', 'c_spec_yes');
+
+    fillCheckbox(form, 'toggle_28', 'c_type_1');
+    fillCheckbox(form, 'toggle_29', 'c_type_2');
+    fillCheckbox(form, 'toggle_30', 'c_type_3');
+    fillCheckbox(form, 'toggle_31', 'c_type_4');
+    fillCheckbox(form, 'toggle_33', 'c_type_5');
+    fillCheckbox(form, 'toggle_34', 'c_type_6');
+    fillCheckbox(form, 'toggle_35', 'c_type_7');
+    fillCheckbox(form, 'toggle_36', 'c_type_8');
+    fillCheckbox(form, 'toggle_37', 'c_type_9');
+    fillCheckbox(form, 'toggle_38', 'c_type_10');
+    fillCheckbox(form, 'toggle_39', 'c_type_11');
+
+    fillCheckbox(form, 'toggle_40', 'c_has_other_yes');
+    fillCheckbox(form, 'toggle_42', 'c_has_other_no');
+
+    fillCheckbox(form, 'toggle_44', 'c_pay_1');
+    fillCheckbox(form, 'toggle_46', 'c_pay_2');
+    fillCheckbox(form, 'toggle_48', 'c_pay_3');
+    fillCheckbox(form, 'toggle_50', 'c_pay_4');
+    fillCheckbox(form, 'toggle_41', 'c_pay_5');
+
+    fillCheckbox(form, 'toggle_43', 'c_cur_1');
+    fillCheckbox(form, 'toggle_45', 'c_cur_2');
+    fillCheckbox(form, 'toggle_47', 'c_cur_3');
+
+    fillCheckbox(form, 'toggle_49', 'c_ret_1');
+    fillCheckbox(form, 'toggle_51', 'c_ret_2');
+    fillCheckbox(form, 'toggle_52', 'c_ret_3');
+    fillCheckbox(form, 'toggle_54', 'c_ret_4');
+    fillCheckbox(form, 'toggle_55', 'c_ret_5');
+    fillCheckbox(form, 'toggle_56', 'c_ret_6');
+    fillCheckbox(form, 'toggle_57', 'c_ret_7');
+
+    fillCheckbox(form, 'toggle_58', 'c_src_1');
+    fillCheckbox(form, 'toggle_59', 'c_src_2');
+    fillCheckbox(form, 'toggle_60', 'c_src_3');
+    fillCheckbox(form, 'toggle_61', 'c_src_4');
+    fillCheckbox(form, 'toggle_62', 'c_src_5');
+    fillCheckbox(form, 'toggle_63', 'c_src_6');
+    fillCheckbox(form, 'toggle_64', 'c_src_7');
+
+    fillCheckbox(form, 'toggle_65', 'c_old_app_y');
+    fillCheckbox(form, 'toggle_66', 'c_old_app_n');
+    fillCheckbox(form, 'toggle_67', 'c_old_ins_y');
+    fillCheckbox(form, 'toggle_68', 'c_old_ins_n');
+    fillCheckbox(form, 'toggle_69', 'c_old_auth_y');
+    fillCheckbox(form, 'toggle_71', 'c_old_auth_n');
+
+    fillCheckbox(form, 'toggle_72', 'c_inv_1');
+    fillCheckbox(form, 'toggle_73', 'c_inv_2');
+    fillCheckbox(form, 'toggle_75', 'c_inv_3');
+    fillCheckbox(form, 'toggle_76', 'c_fx_y');
+    fillCheckbox(form, 'toggle_77', 'c_fx_n');
+
+    fillCheckbox(form, 'toggle_78', 'c_prov_1');
+    fillCheckbox(form, 'toggle_79', 'c_prov_2');
+
+    fillCheckbox(form, 'toggle_80', 'c_prod_1');
+    fillCheckbox(form, 'toggle_81', 'c_prod_2');
+    fillCheckbox(form, 'toggle_82', 'c_term_1');
+    fillCheckbox(form, 'toggle_83', 'c_cov_1');
+    fillCheckbox(form, 'toggle_84', 'c_cov_2');
+
+    fillCheckbox(form, 'toggle_85', 'c_rsn_1');
+    fillCheckbox(form, 'toggle_86', 'c_rsn_2');
+    fillCheckbox(form, 'toggle_87', 'c_rsn_3');
+    fillCheckbox(form, 'Check Box24', 'c_rsn_4');
+    fillCheckbox(form, 'Check Box25', 'c_rsn_5');
+
+    // 洗錢防制檢核表
+    fillCheckbox(form, 'Check Box26', 'c_aml_1'); // 地域 一般
+    fillCheckbox(form, 'Check Box27', 'c_aml_2'); // 地域 高
+    fillCheckbox(form, 'toggle_88', 'c_aml_3');   // 這些是 PDF 隱藏的推斷，如果沒連動可以回報
+    fillCheckbox(form, 'toggle_89', 'c_aml_4');
+    fillCheckbox(form, 'toggle_90', 'c_aml_5');
+    fillCheckbox(form, 'toggle_91', 'c_aml_6');
+    fillCheckbox(form, 'toggle_92', 'c_aml_7');
+    fillCheckbox(form, 'toggle_93', 'c_aml_8');
 }
 
 init();
