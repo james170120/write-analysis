@@ -5,31 +5,41 @@ const fontUrl = './NotoSansTC-Regular.ttf';
 
 let originalPdfBytes = null;
 let originalFontBytes = null;
-
-// 🌟 解決延遲：新增一個計時器變數
 let debounceTimer; 
 
-// 🌟 加入第四個參數 targetFont
+// 📝 文字專用小幫手 (保留我們的終極防呆版)
 function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // 清除干擾機關
             field.removeMaxLength();
             if (typeof field.disableCombing === 'function') field.disableCombing();
             if (align !== null) field.setAlignment(align);
 
-            // 寫入文字與設定大小
             field.setText(inputElement.value);
             if (fontSize !== null) field.setFontSize(fontSize); 
-
-            // 👇 最關鍵：直接針對這個欄位更新字型與外觀
             field.updateAppearances(targetFont);
         }
+    } catch (e) {}
+}
+
+// ✅ 全新！打勾方塊專用小幫手
+function fillCheckbox(form, fieldName, elementId) {
+    try {
+        const field = form.getCheckBox(fieldName);
+        const inputElement = document.getElementById(elementId);
+        
+        if (field && inputElement) {
+            if (inputElement.checked) {
+                field.check(); // 打勾
+            } else {
+                field.uncheck(); // 取消打勾
+            }
+        }
     } catch (e) {
-        // 忽略錯誤
+        // 如果 PDF 裡面的名稱對不上，或是它其實是 RadioButton，會在這裡被忽略
     }
 }
 
@@ -45,10 +55,9 @@ async function init() {
 
         await updatePreview();
 
-        // 🌟 解決延遲：改用「防抖 (Debounce)」機制來監聽輸入
         document.getElementById('pdfForm').addEventListener('input', () => {
-            clearTimeout(debounceTimer); // 如果你還在連續打字，就取消上一次的倒數
-            debounceTimer = setTimeout(updatePreview, 500); // 等你停下手 0.5 秒後，才更新 PDF
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(updatePreview, 500); 
         });
 
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
@@ -64,25 +73,41 @@ async function updatePreview() {
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
     pdfDoc.registerFontkit(window.fontkit);
     
-    // 1. 載入中文字型 (給名字、公司用)
     const customFont = await pdfDoc.embedFont(originalFontBytes);
-    // 2. 載入標準英文字型 (專門給身分證用，拯救排版！)
     const helveticaFont = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
-    
     const form = pdfDoc.getForm();
 
-    // 🌟 依照欄位特性，分配不同的字型給小幫手
+    // ==========================================
+    // 📝 填寫文字欄位
+    // ==========================================
+    // 要保人
     fillField(form, 'fill_16', 'applicantName', customFont);
-    
-    // 👇 身分證專屬：換上 helveticaFont，並且靠左對齊
     fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
-    
     fillField(form, 'fill_18', 'applicantBirthday', customFont);
     fillField(form, 'fill_19', 'applicantOccupation', customFont);
+    
+    // 被保人 (請把 fill_XX 換成你找出的正確名稱)
+    fillField(form, 'fill_20', 'insuredName', customFont); 
+    fillField(form, 'fill_21', 'insuredId', helveticaFont, 10, TextAlignment.Left);
+
     fillField(form, 'Text8', 'insuranceCompany', customFont);
 
-    // ⚠️ 這裡原本有一行 form.updateFieldAppearances(customFont); 請務必刪除！
-    // 因為我們已經在 fillField 裡面針對每個欄位單獨更新了，這樣才不會互相覆蓋。
+    // ==========================================
+    // ✅ 填寫打勾方塊 (Checkbox)
+    // ==========================================
+    // 👇 請把 'toggle_XX' 換成你在開發者工具或 PDF 編輯器中找到的真實名稱！
+    
+    // 性別範例
+    fillCheckbox(form, 'toggle_4', 'appGenderMale');
+    fillCheckbox(form, 'toggle_5', 'appGenderFemale');
+
+    // 同要保人範例
+    fillCheckbox(form, 'toggle_6', 'sameAsApplicant');
+
+    // 投保目的範例
+    fillCheckbox(form, 'toggle_7', 'purpose1'); // 保障需求
+    fillCheckbox(form, 'toggle_8', 'purpose2'); // 醫療給付
+    fillCheckbox(form, 'toggle_9', 'purpose3'); // 退休規劃
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -90,30 +115,25 @@ async function updatePreview() {
     document.getElementById('pdfPreview').src = url;
 }
 
+// (為了版面簡潔，downloadPDF 的內容請比照 updatePreview 內的 fillField 與 fillCheckbox 補上，並加上 form.flatten(); 即可)
 async function downloadPDF() {
-    if (!originalPdfBytes || !originalFontBytes) return;
+    // ... 前置作業相同 ...
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
-    
     pdfDoc.registerFontkit(window.fontkit);
     const customFont = await pdfDoc.embedFont(originalFontBytes);
+    const helveticaFont = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
     const form = pdfDoc.getForm();
 
-    // 下載時也一樣套用乾淨的寫法
-    fillField(form, 'fill_16', 'applicantName');
-    fillField(form, 'fill_17', 'applicantId', 10, TextAlignment.Left);
-    fillField(form, 'fill_18', 'applicantBirthday');
-    fillField(form, 'fill_19', 'applicantOccupation');
-    fillField(form, 'Text8', 'insuranceCompany');
+    // 複製 updatePreview 裡的 fillField 跟 fillCheckbox 到這裡
+    fillField(form, 'fill_16', 'applicantName', customFont);
+    fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
+    fillCheckbox(form, 'toggle_4', 'appGenderMale');
+    // ... 依此類推 ...
 
-    form.updateFieldAppearances(customFont);
-    
-    // 鎖死表單，讓下載後的 PDF 無法再被編輯
-    form.flatten(); 
-
+    form.flatten();
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement('a');
     a.href = url;
     a.download = '已完成_書面分析報告.pdf';
