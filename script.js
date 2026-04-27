@@ -15,23 +15,28 @@ function fillField(form, fieldName, elementId, fontSize = 10, align = null) {
         const inputElement = document.getElementById(elementId);
         
         if (field && inputElement) {
-            // 1. 保留我們之前的核彈級清除
-            field.acroField.dict.delete(PDFName.of('MaxLen'));
-            field.acroField.dict.delete(PDFName.of('Ff'));
-            field.acroField.dict.delete(PDFName.of('Q'));
+            // 1. 放棄暴力刪除，改用官方 API (這會同時深層清除資料層與視覺層的設定)
+            field.removeMaxLength();
+            if (typeof field.disableCombing === 'function') {
+                field.disableCombing();
+            }
+            field.disableMultiline(); // 確保關閉多行模式，讓文字回到同一基準線
 
-            // 👇 2. 終極絕招：強迫欄位變成「多行模式」！
-            // 這會騙過 pdf-lib，讓它放棄使用單行欄位那套有 bug 的排版邏輯
-            field.enableMultiline();
-
-            // 3. 設定對齊方向
+            // 2. 強制設定對齊方向
             if (align !== null) {
                 field.setAlignment(align);
             }
 
-            // 4. 寫入文字與設定大小
-            field.setText(inputElement.value);
+            // 👇 3. 終極障眼法：在文字最後面加上一個「半形空白」
+            // 只要加了這個空白，pdf-lib 的公式就會被打破，強迫它把這串字當作普通句子，乖乖靠左排好！
+            let finalValue = inputElement.value;
+            if (finalValue !== '') {
+                finalValue = finalValue + ' '; // 偷偷加一個空白
+            }
+            
+            field.setText(finalValue);
 
+            // 4. 設定字體大小
             if (fontSize !== null) {
                 field.setFontSize(fontSize); 
             }
