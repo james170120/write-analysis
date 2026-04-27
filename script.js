@@ -1,5 +1,5 @@
 const { PDFDocument, TextAlignment, PDFName, StandardFonts } = PDFLib;
-
+const DEBUG_MODE = true;
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-Regular.ttf';
 
@@ -73,42 +73,40 @@ async function updatePreview() {
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
     pdfDoc.registerFontkit(window.fontkit);
     
+    // 載入字型
     const customFont = await pdfDoc.embedFont(originalFontBytes);
     const helveticaFont = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
     const form = pdfDoc.getForm();
+    const fields = form.getFields();
 
-    // ==========================================
-    // 📝 填寫文字欄位
-    // ==========================================
-    // 要保人
-    fillField(form, 'fill_16', 'applicantName', customFont);
-    fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_18', 'applicantBirthday', customFont);
-    fillField(form, 'fill_19', 'applicantOccupation', customFont);
-    
-    // 被保人 (請把 fill_XX 換成你找出的正確名稱)
-    fillField(form, 'fill_20', 'insuredName', customFont); 
-    fillField(form, 'fill_21', 'insuredId', helveticaFont, 10, TextAlignment.Left);
+    if (DEBUG_MODE) {
+        console.log("=== 你的 PDF 欄位名稱列表 ===");
+        fields.forEach(field => {
+            const name = field.getName();
+            console.log(name); // 同時會在 F12 的 Console 印出清單
 
-    fillField(form, 'Text8', 'insuranceCompany', customFont);
+            try {
+                // 1. 如果是文字框，就把名稱印在格子裡
+                const textField = form.getTextField(name);
+                textField.setText(name);
+                textField.setFontSize(8); // 字縮小一點才塞得下名稱
+            } catch (e) {
+                // 2. 如果是打勾方塊，我們讓它自動打勾，方便你在圖上對應位置
+                try {
+                    const checkBox = form.getCheckBox(name);
+                    checkBox.check();
+                } catch (err) {}
+            }
+        });
+    } else {
+        // 這裡放你原本寫好的正式填寫邏輯 (fillField 等等)
+        fillField(form, 'fill_16', 'applicantName', customFont);
+        fillField(form, 'fill_17', 'applicantId', helveticaFont, 10, TextAlignment.Left);
+        // ... 以此類推
+    }
 
-    // ==========================================
-    // ✅ 填寫打勾方塊 (Checkbox)
-    // ==========================================
-    // 👇 請把 'toggle_XX' 換成你在開發者工具或 PDF 編輯器中找到的真實名稱！
-    
-    // 性別範例
-    fillCheckbox(form, 'toggle_4', 'appGenderMale');
-    fillCheckbox(form, 'toggle_5', 'appGenderFemale');
-
-    // 同要保人範例
-    fillCheckbox(form, 'toggle_6', 'sameAsApplicant');
-
-    // 投保目的範例
-    fillCheckbox(form, 'toggle_7', 'purpose1'); // 保障需求
-    fillCheckbox(form, 'toggle_8', 'purpose2'); // 醫療給付
-    fillCheckbox(form, 'toggle_9', 'purpose3'); // 退休規劃
-
+    // 更新外觀並顯示
+    form.updateFieldAppearances(customFont);
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
