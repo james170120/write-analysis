@@ -208,9 +208,9 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_40', 'c_cur_3');
 
     // 9. 繳費方式 (直行跳號規律 42, 44...)
-    fillCheckbox(form, 'toggle_42', 'c_pay_1');35
-    fillCheckbox(form, 'toggle_44', 'c_pay_2');36
-    fillCheckbox(form, 'toggle_46', 'c_pay_3');37
+    fillCheckbox(form, 'toggle_35', 'c_pay_1');
+    fillCheckbox(form, 'toggle_36', 'c_pay_2');
+    fillCheckbox(form, 'toggle_37', 'c_pay_3');
     fillCheckbox(form, 'toggle_48', 'c_pay_4');
     fillCheckbox(form, 'toggle_50', 'c_pay_5');
 
