@@ -182,25 +182,25 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_19', 'c_need_9');
 
     // 5. 指定保險公司
-    fillCheckbox(form, 'toggle_24', 'c_spec_no');
-    fillCheckbox(form, 'toggle_25', 'c_spec_yes');
+    fillCheckbox(form, 'toggle_31', 'c_spec_no');
+    fillCheckbox(form, 'toggle_32', 'c_spec_yes');
 
     // 6. 是否已有投保其他 (這兩個在 PDF 建立時順序被先拉了)
-    fillCheckbox(form, 'toggle_20', 'c_has_other_yes');
-    fillCheckbox(form, 'toggle_21', 'c_has_other_no');
+    fillCheckbox(form, 'toggle_33', 'c_has_other_yes');
+    fillCheckbox(form, 'toggle_34', 'c_has_other_no');
 
     // 7. 欲投保險種
-    fillCheckbox(form, 'toggle_26', 'c_type_1');
-    fillCheckbox(form, 'toggle_27', 'c_type_2');
-    fillCheckbox(form, 'toggle_28', 'c_type_3');
-    fillCheckbox(form, 'toggle_29', 'c_type_4');
-    fillCheckbox(form, 'toggle_30', 'c_type_5');
-    fillCheckbox(form, 'toggle_31', 'c_type_6');
-    fillCheckbox(form, 'toggle_33', 'c_type_7');
-    fillCheckbox(form, 'toggle_34', 'c_type_8');
-    fillCheckbox(form, 'toggle_35', 'c_type_9');
-    fillCheckbox(form, 'toggle_36', 'c_type_10');
-    fillCheckbox(form, 'toggle_37', 'c_type_11');
+    fillCheckbox(form, 'toggle_20', 'c_type_1');
+    fillCheckbox(form, 'toggle_21', 'c_type_2');
+    fillCheckbox(form, 'toggle_22', 'c_type_3');
+    fillCheckbox(form, 'toggle_23', 'c_type_4');
+    fillCheckbox(form, 'toggle_24', 'c_type_5');
+    fillCheckbox(form, 'toggle_25', 'c_type_6');
+    fillCheckbox(form, 'toggle_26', 'c_type_7');
+    fillCheckbox(form, 'toggle_27', 'c_type_8');
+    fillCheckbox(form, 'toggle_28', 'c_type_9');
+    fillCheckbox(form, 'toggle_29', 'c_type_10');
+    fillCheckbox(form, 'toggle_30', 'c_type_11');
 
     // 8. 幣別
     fillCheckbox(form, 'toggle_38', 'c_cur_1');
@@ -208,9 +208,9 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_40', 'c_cur_3');
 
     // 9. 繳費方式 (直行跳號規律 42, 44...)
-    fillCheckbox(form, 'toggle_42', 'c_pay_1');
-    fillCheckbox(form, 'toggle_44', 'c_pay_2');
-    fillCheckbox(form, 'toggle_46', 'c_pay_3');
+    fillCheckbox(form, 'toggle_42', 'c_pay_1');35
+    fillCheckbox(form, 'toggle_44', 'c_pay_2');36
+    fillCheckbox(form, 'toggle_46', 'c_pay_3');37
     fillCheckbox(form, 'toggle_48', 'c_pay_4');
     fillCheckbox(form, 'toggle_50', 'c_pay_5');
 
