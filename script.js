@@ -65,6 +65,55 @@ async function init() {
             debounceTimer = setTimeout(updatePreview, 3000); 
         });
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+        // 🌟 新增：監聽預設範本下拉選單
+        document.getElementById('templateSelect').addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === '') return; // 如果選回「請選擇」，就不動作
+
+            // 1. 先把畫面上所有的勾選框清空 (避免切換範本時，上一個範本的勾選殘留)
+            document.querySelectorAll('#pdfForm input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            // 2. 判斷並套用對應的範本資料
+            if (val === 'motorcycle') {
+                // 自動填入文字
+                document.getElementById('t_car_type').value = '普通重型機車';
+
+                // 自動打勾項目 (完全依照你提供的圖片設定)
+                const presetChecks = [
+                    'c_cat_prop',     // 財產保險
+                    'c_need_1',       // 保障需求
+                    'c_need_4',       // 損害填補
+                    'c_need_6',       // 風險移轉
+                    'c_type_7',       // 責任險
+                    'c_type_8',       // 任意車險
+                    'c_spec_no',      // 指定保險公司：否
+                    'c_pay_1',        // 躉繳
+                    'c_ret_3',        // 11-20年
+                    'c_src_1',        // 薪資
+                    'c_old_app_n',    // 高齡要保人：否
+                    'c_old_ins_n',    // 高齡被保人：否
+                    'c_old_auth_n',   // 高齡授權人：否
+                    'c_prov_1',       // 提供保險公司網站
+                    'c_prod_2',       // 商品：詳報價單/要保書
+                    'c_term_1',       // 條款：依保險公司提供說明
+                    'c_cov_2',        // 保障範圍：詳報價單/要保書
+                    'c_rsn_2'         // 理由：符合需求
+                ];
+                
+                presetChecks.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.checked = true;
+                });
+            } else if (val === 'car') {
+                // 未來你可以把汽車的預設值寫在這裡
+                // document.getElementById('t_car_type').value = '自用小客車';
+                // const carChecks = [ ... ];
+            }
+
+            // 3. 強制「立即」更新 PDF (因為這是套用範本，不需要等 3 秒)
+            clearTimeout(debounceTimer);
+            updatePreview();
+        });
     } catch (error) { console.error("載入發生錯誤:", error); }
 }
 
