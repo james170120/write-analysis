@@ -68,54 +68,49 @@ async function init() {
 
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
 
-        // 🌟 新增：監聽預設範本下拉選單
+        // 🌟 監聽預設範本下拉選單
         document.getElementById('templateSelect').addEventListener('change', (e) => {
             const val = e.target.value;
-            if (val === '') return; // 如果選回「請選擇」，就不動作
+            if (val === '') return; 
 
-            // 1. 先把畫面上所有的勾選框清空 (避免切換範本時，上一個範本的勾選殘留)
+            // 1. 先把畫面上所有的勾選框清空
             document.querySelectorAll('#pdfForm input[type="checkbox"]').forEach(cb => cb.checked = false);
+            // 2. 也要清空車輛種類文字框 (避免機車殘留到汽車)
+            document.getElementById('t_car_type').value = '';
 
-            // 2. 判斷並套用對應的範本資料
+            // 3. 判斷並套用範本
+            let presetChecks = [];
+
             if (val === 'motorcycle') {
-                // 自動填入文字
+                // --- 🏍️ 機車範本 ---
                 document.getElementById('t_car_type').value = '普通重型機車';
-
-                // 自動打勾項目 (完全依照你提供的圖片設定)
-                const presetChecks = [
-                    'c_cat_prop',     // 財產保險
-                    'c_need_1',       // 保障需求
-                    'c_need_4',       // 損害填補
-                    'c_need_6',       // 風險移轉
-                    'c_type_7',       // 責任險
-                    'c_type_8',       // 任意車險
-                    'c_spec_no',      // 指定保險公司：否
-                    'c_pay_1',        // 躉繳
-                    'c_ret_3',        // 11-20年
-                    'c_src_1',        // 薪資
-                    'c_prov_1',       // 提供保險公司網站
-                    'c_prod_2',       // 商品：詳報價單/要保書
-                    'c_term_1',       // 條款：依保險公司提供說明
-                    'c_cov_2',        // 保障範圍：詳報價單/要保書
-                    'c_rsn_2',        // 理由：符合需求
-                    'c_aml_1',        // 地域風險 - 一般
-                    'c_aml_3',        // 保戶風險 - 一般
-                    'c_aml_5',        // 產品風險 - 一般
-                    'c_aml_7'         // 整體風險 - 一般
-                
+                presetChecks = [
+                    'c_cat_prop', 'c_need_1', 'c_need_4', 'c_need_6',
+                    'c_type_7', 'c_type_8', 'c_spec_no', 'c_pay_1',
+                    'c_ret_3', 'c_src_1', 'c_prov_1', 'c_prod_2',
+                    'c_term_1', 'c_cov_2', 'c_rsn_2', 'c_aml_1',
+                    'c_aml_3', 'c_aml_5', 'c_aml_7'
                 ];
-                
-                presetChecks.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.checked = true;
-                });
             } else if (val === 'car') {
-                // 未來你可以把汽車的預設值寫在這裡
-                // document.getElementById('t_car_type').value = '自用小客車';
-                // const carChecks = [ ... ];
+                // --- 🚗 汽車範本 ---
+                document.getElementById('t_car_type').value = '自用小客車';
+                // 依據你的需求，勾選項目跟機車完全同步
+                presetChecks = [
+                    'c_cat_prop', 'c_need_1', 'c_need_4', 'c_need_6',
+                    'c_type_7', 'c_type_8', 'c_spec_no', 'c_pay_1',
+                    'c_ret_3', 'c_src_1', 'c_prov_1', 'c_prod_2',
+                    'c_term_1', 'c_cov_2', 'c_rsn_2', 'c_aml_1',
+                    'c_aml_3', 'c_aml_5', 'c_aml_7'
+                ];
             }
 
-            // 3. 強制「立即」更新 PDF (因為這是套用範本，不需要等 3 秒)
+            // 執行打勾動作
+            presetChecks.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.checked = true;
+            });
+
+            // 4. 強制「立即」更新 PDF 預覽
             clearTimeout(debounceTimer);
             updatePreview();
         });
