@@ -168,7 +168,7 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_7', 'c_rel_3');
     fillCheckbox(form, 'toggle_8', 'c_rel_4');
     fillCheckbox(form, 'toggle_9', 'c_rel_5');
-    fillCheckbox(form, 'toggle_10', 'c_rel_6');
+    fillCheckbox(form, 'undefined', 'c_rel_6');
 
     // 4. 投保目的及需求
     fillCheckbox(form, 'toggle_11', 'c_need_1');
@@ -179,7 +179,7 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_16', 'c_need_6');
     fillCheckbox(form, 'toggle_17', 'c_need_7');
     fillCheckbox(form, 'toggle_18', 'c_need_8');
-    fillCheckbox(form, 'toggle_19', 'c_need_9');
+    fillCheckbox(form, 'undefined_2', 'c_need_9');
 
     // 5. 指定保險公司
     fillCheckbox(form, 'toggle_31', 'c_spec_no');
