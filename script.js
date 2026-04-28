@@ -263,7 +263,9 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_85', 'c_rsn_2');
     fillCheckbox(form, 'toggle_86', 'c_rsn_3');
     fillCheckbox(form, 'toggle_87', 'c_rsn_4');
-    
+
+    // 新增：具投資或匯率風險應提供之風險說明
+    fillCheckbox(form, 'toggle_65', 'c_risk_prov');
     // ⚠️ 備註：洗錢防制檢核表 & 理由的「其他」在 PDF 原始檔中並未建立對應的 Checkbox 欄位。
 }
 
