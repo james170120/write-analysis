@@ -7,8 +7,8 @@ let originalPdfBytes = null;
 let originalFontBytes = null;
 let debounceTimer; 
 
-// 🛡️ 防呆文字小幫手
-function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null) {
+// 🛡️ 升級版文字小幫手：加入第7個參數 addPrefixSpace，處理需要前置空白的欄位
+function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null, addPrefixSpace = false) {
     try {
         const field = form.getTextField(fieldName);
         const inputElement = document.getElementById(elementId);
@@ -16,12 +16,18 @@ function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align 
         if (field && inputElement) {
             field.removeMaxLength();
             if (typeof field.disableCombing === 'function') field.disableCombing();
+            
+            // 💡 關閉多行模式，這是讓 PDF 欄位「上下置中」的關鍵
             field.disableMultiline();
 
             if (align !== null) field.setAlignment(align);
 
             let finalValue = inputElement.value;
-            if (finalValue !== '') finalValue = finalValue + ' '; // 空白防呆
+            if (finalValue !== '') {
+                // 如果開啟了 addPrefixSpace，就在文字最前面加一個半形空白
+                if (addPrefixSpace) finalValue = ' ' + finalValue; 
+                finalValue = finalValue + ' '; // 結尾防呆空白
+            }
             
             field.setText(finalValue);
             if (fontSize !== null) field.setFontSize(fontSize); 
@@ -97,23 +103,26 @@ async function downloadPDF() {
 // 📦 資料綁定核心
 function applyFormData(form, customFont, helveticaFont) {
     // ------------------- 【文字輸入區】 -------------------
-    fillField(form, 'fill_16', 't_app_name', customFont);
+    // 1. 要保人/被保人基本資料/車輛 (統一設定：大小10 + 靠左對齊)
+    fillField(form, 'fill_16', 't_app_name', customFont, 10, TextAlignment.Left);
     fillField(form, 'fill_17', 't_app_id', helveticaFont, 10, TextAlignment.Left);
     fillField(form, 'fill_18', 't_app_birth', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_19', 't_app_job', customFont);
+    fillField(form, 'fill_19', 't_app_job', customFont, 10, TextAlignment.Left);
     
-    fillField(form, 'fill_20', 't_ins_name', customFont);
+    fillField(form, 'fill_20', 't_ins_name', customFont, 10, TextAlignment.Left);
     fillField(form, 'fill_21', 't_ins_id', helveticaFont, 10, TextAlignment.Left);
     fillField(form, 'fill_22', 't_ins_birth', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_23', 't_ins_job', customFont);
+    fillField(form, 'fill_23', 't_ins_job', customFont, 10, TextAlignment.Left);
     
     fillField(form, 'fill_24', 't_car_plate', helveticaFont, 10, TextAlignment.Left);
-    fillField(form, 'fill_25', 't_car_type', customFont);
+    fillField(form, 'fill_25', 't_car_type', customFont, 10, TextAlignment.Left);
     
-    fillField(form, 'fill_1', 't_rel_other', customFont); // 關係/幣別 其他
-    fillField(form, 'fill_2', 't_need_other', customFont); // 需求其他/風險備註 (共用)
-    fillField(form, 'fill_3', 't_spec_company', customFont);
+    // 2. 「其他」說明欄位 (統一設定：字體縮小為 8 + 靠左對齊)
+    fillField(form, 'fill_1', 't_rel_other', customFont, 8, TextAlignment.Left); 
+    fillField(form, 'fill_2', 't_need_other', customFont, 8, TextAlignment.Left); 
+    fillField(form, 'fill_3', 't_spec_company', customFont, 8, TextAlignment.Left);
     
+    // 金額與日期 (維持大小10 + 置中)
     fillField(form, 'Text5', 't_amt_1', helveticaFont, 10, TextAlignment.Center);
     fillField(form, 'Text7', 't_amt_2', helveticaFont, 10, TextAlignment.Center);
     fillField(form, 'Text6', 't_amt_3', helveticaFont, 10, TextAlignment.Center);
@@ -126,14 +135,19 @@ function applyFormData(form, customFont, helveticaFont) {
     fillField(form, 'fill_9', 't_d2', helveticaFont, 10, TextAlignment.Center);
 
     fillField(form, 'fill_10', 't_premium_amt', helveticaFont, 10, TextAlignment.Center);
-    fillField(form, 'fill_11', 't_source_other', customFont);
-    fillField(form, 'fill_12', 't_risk_change', customFont);
+    
+    // 其他來源/風險變更 (字體縮小為 8 + 靠左對齊)
+    fillField(form, 'fill_11', 't_source_other', customFont, 8, TextAlignment.Left);
+    fillField(form, 'fill_12', 't_risk_change', customFont, 8, TextAlignment.Left);
 
-    fillField(form, 'Text8', 't_rec_c1', customFont);
-    fillField(form, 'Text11', 't_rec_c2', customFont);
-    fillField(form, 'Text12', 't_rec_c3', customFont);
-    fillField(form, 'fill_13', 't_prod_other', customFont);
-    fillField(form, 'fill_14', 't_cov_other', customFont);
+    // 3. 業務員建議區塊 - 保險公司 (靠左對齊，且第一家公司強制加入前置空白)
+    fillField(form, 'Text8', 't_rec_c1', customFont, 10, TextAlignment.Left, true); // 👈 啟動前置空白
+    fillField(form, 'Text11', 't_rec_c2', customFont, 10, TextAlignment.Left);
+    fillField(form, 'Text12', 't_rec_c3', customFont, 10, TextAlignment.Left);
+    
+    // 險種其他/保障範圍其他 (字體縮小為 8 + 靠左對齊)
+    fillField(form, 'fill_13', 't_prod_other', customFont, 8, TextAlignment.Left);
+    fillField(form, 'fill_14', 't_cov_other', customFont, 8, TextAlignment.Left);
     
     fillField(form, 'Text9', 't_rec_p1', helveticaFont, 10, TextAlignment.Center);
     fillField(form, 'Text15', 't_rec_p2', helveticaFont, 10, TextAlignment.Center);
@@ -147,7 +161,7 @@ function applyFormData(form, customFont, helveticaFont) {
     fillField(form, 'Text19', 't_date_d', helveticaFont, 10, TextAlignment.Center);
 
     // ---------------------------------------------------------
-    // ✅ 【打勾方塊對應區】(完美校正版)
+    // ✅ 【打勾方塊對應區】(保留你的完美校正版)
     // ---------------------------------------------------------
     
     // 1. 頂部報告書類別
