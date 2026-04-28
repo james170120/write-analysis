@@ -266,7 +266,18 @@ function applyFormData(form, customFont, helveticaFont) {
 
     // 新增：具投資或匯率風險應提供之風險說明
     fillCheckbox(form, 'toggle_65', 'c_risk_prov');
-    // ⚠️ 備註：洗錢防制檢核表 & 理由的「其他」在 PDF 原始檔中並未建立對應的 Checkbox 欄位。
+    // 洗錢防制檢核表 (精準校正版)
+    fillCheckbox(form, 'toggle_80', 'c_aml_1'); // 地域風險 - 一般
+    fillCheckbox(form, 'toggle_81', 'c_aml_2'); // 地域風險 - 高
+    
+    fillCheckbox(form, 'toggle_82', 'c_aml_3'); // 保戶風險 - 一般
+    fillCheckbox(form, 'toggle_83', 'c_aml_4'); // 保戶風險 - 高
+    
+    fillCheckbox(form, 'toggle_84', 'c_aml_5'); // 產品風險 - 一般
+    fillCheckbox(form, 'toggle_85', 'c_aml_6'); // 產品風險 - 高
+    
+    fillCheckbox(form, 'toggle_86', 'c_aml_7'); // 整體風險 - 一般
+    fillCheckbox(form, 'toggle_87', 'c_aml_8'); // 整體風險 - 高
 }
 
 init();
