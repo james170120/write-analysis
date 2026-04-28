@@ -60,11 +60,14 @@ async function init() {
         originalFontBytes = await fontResponse.arrayBuffer();
         await updatePreview();
 
+        // 原本的 3 秒延遲更新機制
         document.getElementById('pdfForm').addEventListener('input', () => {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(updatePreview, 3000); 
         });
+
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
+
         // 🌟 新增：監聽預設範本下拉選單
         document.getElementById('templateSelect').addEventListener('change', (e) => {
             const val = e.target.value;
@@ -114,6 +117,7 @@ async function init() {
             clearTimeout(debounceTimer);
             updatePreview();
         });
+
     } catch (error) { console.error("載入發生錯誤:", error); }
 }
 
