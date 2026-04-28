@@ -62,7 +62,7 @@ async function init() {
 
         document.getElementById('pdfForm').addEventListener('input', () => {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(updatePreview, 600); 
+            debounceTimer = setTimeout(updatePreview, 3000); 
         });
         document.getElementById('downloadBtn').addEventListener('click', downloadPDF);
     } catch (error) { console.error("載入發生錯誤:", error); }
