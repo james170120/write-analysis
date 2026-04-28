@@ -183,7 +183,7 @@ function applyFormData(form, customFont, helveticaFont) {
 
     // 5. 指定保險公司
     fillCheckbox(form, 'toggle_31', 'c_spec_no');
-    fillCheckbox(form, 'toggle_32', 'c_spec_yes');
+    fillCheckbox(form, 'undefined_3', 'c_spec_yes');
 
     // 6. 是否已有投保其他 (這兩個在 PDF 建立時順序被先拉了)
     fillCheckbox(form, 'toggle_33', 'c_has_other_yes');
