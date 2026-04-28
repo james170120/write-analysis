@@ -93,9 +93,6 @@ async function init() {
                     'c_pay_1',        // 躉繳
                     'c_ret_3',        // 11-20年
                     'c_src_1',        // 薪資
-                    'c_old_app_n',    // 高齡要保人：否
-                    'c_old_ins_n',    // 高齡被保人：否
-                    'c_old_auth_n',   // 高齡授權人：否
                     'c_prov_1',       // 提供保險公司網站
                     'c_prod_2',       // 商品：詳報價單/要保書
                     'c_term_1',       // 條款：依保險公司提供說明
