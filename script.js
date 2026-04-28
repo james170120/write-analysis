@@ -168,7 +168,7 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_7', 'c_rel_3');
     fillCheckbox(form, 'toggle_8', 'c_rel_4');
     fillCheckbox(form, 'toggle_9', 'c_rel_5');
-    fillCheckbox(form, 'undefined_1', 'c_rel_6');
+    fillCheckbox(form, 'undefined', 'c_rel_6');
 
     // 4. 投保目的及需求
     fillCheckbox(form, 'toggle_11', 'c_need_1');
