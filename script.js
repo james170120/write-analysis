@@ -203,60 +203,60 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_30', 'c_type_11');
 
     // 8. 幣別
-    fillCheckbox(form, 'toggle_38', 'c_cur_1');
-    fillCheckbox(form, 'toggle_39', 'c_cur_2');
-    fillCheckbox(form, 'toggle_40', 'c_cur_3');
+    fillCheckbox(form, 'toggle_381', 'c_cur_1');
+    fillCheckbox(form, 'toggle_391', 'c_cur_2');
+    fillCheckbox(form, 'toggle_401', 'c_cur_3');
 
     // 9. 繳費方式 (直行跳號規律 42, 44...)
     fillCheckbox(form, 'toggle_35', 'c_pay_1');
     fillCheckbox(form, 'toggle_36', 'c_pay_2');
     fillCheckbox(form, 'toggle_37', 'c_pay_3');
-    fillCheckbox(form, 'toggle_48', 'c_pay_4');
-    fillCheckbox(form, 'toggle_50', 'c_pay_5');
+    fillCheckbox(form, 'toggle_38', 'c_pay_4');
+    fillCheckbox(form, 'toggle_39', 'c_pay_5');
 
     // 10. 剩餘年期 (直行跳號規律 41, 43...)
-    fillCheckbox(form, 'toggle_41', 'c_ret_1');
-    fillCheckbox(form, 'toggle_43', 'c_ret_2');
-    fillCheckbox(form, 'toggle_45', 'c_ret_3');
-    fillCheckbox(form, 'toggle_47', 'c_ret_4');
-    fillCheckbox(form, 'toggle_49', 'c_ret_5');
-    fillCheckbox(form, 'toggle_51', 'c_ret_6');
-    fillCheckbox(form, 'toggle_52', 'c_ret_7');
+    fillCheckbox(form, 'toggle_40', 'c_ret_1');
+    fillCheckbox(form, 'toggle_41', 'c_ret_2');
+    fillCheckbox(form, 'toggle_42', 'c_ret_3');
+    fillCheckbox(form, 'toggle_43', 'c_ret_4');
+    fillCheckbox(form, 'toggle_44', 'c_ret_5');
+    fillCheckbox(form, 'toggle_45', 'c_ret_6');
+    fillCheckbox(form, 'toggle_46', 'c_ret_7');
 
     // 11. 來源
-    fillCheckbox(form, 'toggle_54', 'c_src_1');
-    fillCheckbox(form, 'toggle_55', 'c_src_2');
-    fillCheckbox(form, 'toggle_56', 'c_src_3');
-    fillCheckbox(form, 'toggle_57', 'c_src_4');
-    fillCheckbox(form, 'toggle_58', 'c_src_5');
-    fillCheckbox(form, 'toggle_59', 'c_src_6');
-    fillCheckbox(form, 'toggle_60', 'c_src_7');
+    fillCheckbox(form, 'toggle_47', 'c_src_1');
+    fillCheckbox(form, 'toggle_48', 'c_src_2');
+    fillCheckbox(form, 'toggle_49', 'c_src_3');
+    fillCheckbox(form, 'toggle_50', 'c_src_4');
+    fillCheckbox(form, 'toggle_51', 'c_src_5');
+    fillCheckbox(form, 'toggle_52', 'c_src_6');
+    fillCheckbox(form, 'undefined_4', 'c_src_7');
 
     // 12. 高齡客戶
-    fillCheckbox(form, 'toggle_61', 'c_old_app_y');
-    fillCheckbox(form, 'toggle_62', 'c_old_app_n');
-    fillCheckbox(form, 'toggle_63', 'c_old_ins_y');
-    fillCheckbox(form, 'toggle_64', 'c_old_ins_n');
-    fillCheckbox(form, 'toggle_65', 'c_old_auth_y');
-    fillCheckbox(form, 'toggle_66', 'c_old_auth_n');
+    fillCheckbox(form, 'toggle_54', 'c_old_app_y');
+    fillCheckbox(form, 'toggle_55', 'c_old_app_n');
+    fillCheckbox(form, 'toggle_56', 'c_old_ins_y');
+    fillCheckbox(form, 'toggle_57', 'c_old_ins_n');
+    fillCheckbox(form, 'toggle_58', 'c_old_auth_y');
+    fillCheckbox(form, 'toggle_59', 'c_old_auth_n');
 
     // 13. 投資型與外幣
-    fillCheckbox(form, 'toggle_67', 'c_inv_1');
-    fillCheckbox(form, 'toggle_68', 'c_inv_2');
-    fillCheckbox(form, 'toggle_69', 'c_inv_3');
-    fillCheckbox(form, 'toggle_71', 'c_fx_y');
-    fillCheckbox(form, 'toggle_72', 'c_fx_n');
+    fillCheckbox(form, 'toggle_60', 'c_inv_1');
+    fillCheckbox(form, 'toggle_61', 'c_inv_2');
+    fillCheckbox(form, 'toggle_62', 'c_inv_3');
+    fillCheckbox(form, 'toggle_63', 'c_fx_y');
+    fillCheckbox(form, 'toggle_64', 'c_fx_n');
 
     // 14. 業務員建議
-    fillCheckbox(form, 'toggle_75', 'c_prov_1');
-    fillCheckbox(form, 'toggle_76', 'c_prov_2');
-    fillCheckbox(form, 'toggle_77', 'c_prod_1');
-    fillCheckbox(form, 'toggle_78', 'c_prod_2');
-    fillCheckbox(form, 'toggle_79', 'c_prod_3');
-    fillCheckbox(form, 'toggle_80', 'c_term_1');
-    fillCheckbox(form, 'toggle_81', 'c_cov_1');
-    fillCheckbox(form, 'toggle_82', 'c_cov_2');
-    fillCheckbox(form, 'toggle_83', 'c_cov_3');
+    fillCheckbox(form, 'toggle_66', 'c_prov_1');
+    fillCheckbox(form, 'toggle_67', 'c_prov_2');
+    fillCheckbox(form, 'toggle_68', 'c_prod_1');
+    fillCheckbox(form, 'toggle_69', 'c_prod_2');
+    fillCheckbox(form, 'undefined_5', 'c_prod_3');
+    fillCheckbox(form, 'toggle_71', 'c_term_1');
+    fillCheckbox(form, 'toggle_72', 'c_cov_1');
+    fillCheckbox(form, 'toggle_73', 'c_cov_2');
+    fillCheckbox(form, 'undefined_6', 'c_cov_3');
 
     // 15. 建議理由
     fillCheckbox(form, 'toggle_84', 'c_rsn_1');
