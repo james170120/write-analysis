@@ -113,7 +113,7 @@ function applyFormData(form) {
     fillField(form, 'fill_22', 't_ins_birth', 10, TextAlignment.Left);
     fillField(form, 'fill_23', 't_ins_job', 10, TextAlignment.Left);
     
-    fillField(form, 'fill_24', 't_car_plate', 10, TextAlignment.Left);
+    fillField(form, 'fill_24', 't_car_plate', helveticaFont, 10, TextAlignment.Left);
     fillField(form, 'fill_25', 't_car_type', 10, TextAlignment.Left);
     
     // 2. 「其他」說明欄位 (字體縮小為 8 + 靠左對齊)
