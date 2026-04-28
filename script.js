@@ -151,9 +151,27 @@ async function downloadPDF() {
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
+
+    // --- 🌟 新增：自動產生動態檔名邏輯 🌟 ---
+    const y = document.getElementById('t_y1').value.trim();
+    const m = document.getElementById('t_m1').value.trim();
+    const d = document.getElementById('t_d1').value.trim();
+    const name = document.getElementById('t_app_name').value.trim();
+    const carType = document.getElementById('t_car_type').value.trim();
+    const plate = document.getElementById('t_car_plate').value.trim();
+    const company = document.getElementById('t_rec_c1').value.trim(); // 抓取保險公司①
+
+    // 將所有欄位放入陣列，過濾掉空白的，然後接在一起
+    const filenameParts = [y, m, d, name, carType, plate, company];
+    const finalFilename = filenameParts.filter(part => part !== "").join("");
+
+    // 如果全部都是空的，就給一個預設檔名
+    const downloadName = finalFilename ? `${finalFilename}.pdf` : '書面分析報告書.pdf';
+    // ---------------------------------------
+
     const a = document.createElement('a');
     a.href = url;
-    a.download = '已完成_書面分析報告.pdf';
+    a.download = downloadName; // 👈 使用動態產生的檔名
     a.click();
     URL.revokeObjectURL(url);
 }
