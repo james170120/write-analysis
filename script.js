@@ -207,14 +207,14 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'toggle_391', 'c_cur_2');
     fillCheckbox(form, 'toggle_401', 'c_cur_3');
 
-    // 9. 繳費方式 (直行跳號規律 42, 44...)
+    // 9. 繳費方式 
     fillCheckbox(form, 'toggle_35', 'c_pay_1');
     fillCheckbox(form, 'toggle_36', 'c_pay_2');
     fillCheckbox(form, 'toggle_37', 'c_pay_3');
     fillCheckbox(form, 'toggle_38', 'c_pay_4');
     fillCheckbox(form, 'toggle_39', 'c_pay_5');
 
-    // 10. 剩餘年期 (直行跳號規律 41, 43...)
+    // 10. 剩餘年期 
     fillCheckbox(form, 'toggle_40', 'c_ret_1');
     fillCheckbox(form, 'toggle_41', 'c_ret_2');
     fillCheckbox(form, 'toggle_42', 'c_ret_3');
