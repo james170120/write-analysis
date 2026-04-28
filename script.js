@@ -104,12 +104,12 @@ function applyFormData(form) {
     // ------------------- 【文字輸入區】 -------------------
     // 1. 要保人/被保人基本資料/車輛 (大小10 + 靠左對齊)
     fillField(form, 'fill_16', 't_app_name', 10, TextAlignment.Left);
-    fillField(form, 'fill_17', 't_app_id', 10, TextAlignment.Left);
+    fillField(form, 'fill_17', 't_app_id', helveticaFont, 10, TextAlignment.Left);
     fillField(form, 'fill_18', 't_app_birth', 10, TextAlignment.Left);
     fillField(form, 'fill_19', 't_app_job', 10, TextAlignment.Left);
     
     fillField(form, 'fill_20', 't_ins_name', 10, TextAlignment.Left);
-    fillField(form, 'fill_21', 't_ins_id', 10, TextAlignment.Left);
+    fillField(form, 'fill_21', 't_ins_id', helveticaFont, 10, TextAlignment.Left);
     fillField(form, 'fill_22', 't_ins_birth', 10, TextAlignment.Left);
     fillField(form, 'fill_23', 't_ins_job', 10, TextAlignment.Left);
     
