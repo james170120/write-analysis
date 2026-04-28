@@ -216,18 +216,31 @@
                         <label><input type="checkbox" id="c_old_auth_n"> 否</label>
                     </div>
                     
+                    <hr>
+                    
+                    <label style="color: #d9534f; margin-top: 10px; font-size: 14px;">風險屬性(欲投保投資型或外幣計價商品適用)</label>
+                    
                     <div class="checkbox-group">
-                        <label>投資型：</label>
-                        <label><input type="checkbox" id="c_inv_1"> 保守</label>
-                        <label><input type="checkbox" id="c_inv_2"> 穩健</label>
-                        <label><input type="checkbox" id="c_inv_3"> 積極</label>
+                        <label>欲投保投資型者：</label>
+                        <label><input type="checkbox" id="c_inv_1"> 保守型</label>
+                        <label><input type="checkbox" id="c_inv_2"> 穩健型</label>
+                        <label><input type="checkbox" id="c_inv_3"> 積極型</label>
                     </div>
+                    
                     <div class="checkbox-group">
-                        <label>外幣計價商品：</label>
+                        <label>欲投保外幣計價商品者：</label>
                         <label><input type="checkbox" id="c_fx_y"> 可承擔匯率風險</label>
                         <label><input type="checkbox" id="c_fx_n"> 不可承擔匯率風險</label>
                     </div>
-                    <input type="text" id="t_risk_change" placeholder="風險屬性變更說明">
+                    
+                    <label>風險屬性變更說明：</label>
+                    <input type="text" id="t_risk_change">
+                    
+                    <div class="checkbox-group" style="margin-top: 10px;">
+                        <label style="color: #d9534f;">具投資或匯率風險應提供之風險說明：</label>
+                        <label><input type="checkbox" id="c_risk_prov"> 已提供並清楚說明</label>
+                    </div>
+                    
                 </fieldset>
 
                 <fieldset>
