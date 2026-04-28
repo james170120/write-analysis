@@ -259,10 +259,11 @@ function applyFormData(form, customFont, helveticaFont) {
     fillCheckbox(form, 'undefined_6', 'c_cov_3');
 
     // 15. 建議理由
-    fillCheckbox(form, 'toggle_84', 'c_rsn_1');
-    fillCheckbox(form, 'toggle_85', 'c_rsn_2');
-    fillCheckbox(form, 'toggle_86', 'c_rsn_3');
-    fillCheckbox(form, 'toggle_87', 'c_rsn_4');
+    fillCheckbox(form, 'toggle_75', 'c_rsn_1');
+    fillCheckbox(form, 'toggle_76', 'c_rsn_2');
+    fillCheckbox(form, 'toggle_77', 'c_rsn_3');
+    fillCheckbox(form, 'toggle_78', 'c_rsn_4');
+    fillCheckbox(form, 'toggle_79', 'c_rsn_5');
 
     // 新增：具投資或匯率風險應提供之風險說明
     fillCheckbox(form, 'toggle_65', 'c_risk_prov');
