@@ -27,6 +27,31 @@
         button { width: 100%; padding: 15px; background: #17252A; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-bottom: 30px;}
         button:hover { background: #2b7a78; }
         .note { color: #d9534f; font-size: 12px; margin-bottom: 5px; }
+        /* 跑馬燈外框與動畫設定 */
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #fff3cd; /* 溫和的黃色警告底色 */
+            color: #d35400; /* 亮眼的橘紅色字體 */
+            padding: 10px 0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+        .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 18s linear infinite; /* 18s 是速度，數字越大越慢 */
+            font-weight: bold;
+            font-size: 15px;
+        }
+        /* 定義跑馬燈從右到左的移動軌跡 */
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
     </style>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
@@ -34,6 +59,12 @@
 <body>
     <div class="container">
         <div class="left-panel">
+            
+            <div class="marquee-container">
+                <div class="marquee-text" id="marqueeMsg">
+                    📢 系統公告：歡迎使用自動化報告書系統！[系統採停止輸入後3秒才會寫入右側檔案，不是壞掉哦]。請務必確認「洗錢防制檢核表」已覈實勾選；若為高齡客戶，請記得評估並填寫對應欄位哦！
+                </div>
+            </div>
             <h2>📝 分析報告書編輯器</h2>
             <form id="pdfForm">
                 
