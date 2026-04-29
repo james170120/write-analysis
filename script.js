@@ -174,6 +174,32 @@ async function downloadPDF() {
     a.download = downloadName; // 👈 使用動態產生的檔名
     a.click();
     URL.revokeObjectURL(url);
+    
+    // --- 📊 傳送數據到 n8n 的追蹤邏輯 ---
+    // 取得當前使用的範本狀態
+    const templateUsed = document.getElementById('templateSelect').value || '手動填寫';
+    
+    // ⚠️ 請替換成你在 n8n 建立的 Webhook 網址
+    const n8nWebhookUrl = 'https://james15211521.zeabur.app/webhook/insurance-report-tracker'; 
+
+    try {
+        fetch(n8nWebhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event: 'download_pdf',
+                template: templateUsed,
+                timestamp: new Date().toISOString()
+            })
+        });
+        console.log("使用紀錄已發送");
+    } catch (error) {
+        // 使用 try-catch 包起來，就算 n8n 沒開或網路出錯，也不會影響使用者下載 PDF
+        console.error("追蹤失敗，但不影響下載:", error);
+    }
+    // ------------------------------------
 }
 
 // 📦 資料綁定核心
