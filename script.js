@@ -162,7 +162,7 @@ async function downloadPDF() {
     const company = document.getElementById('t_rec_c1').value.trim(); // 抓取保險公司①
 
     // 將所有欄位放入陣列，過濾掉空白的，然後接在一起
-    const filenameParts = [y, m, d, name, carType, plate, company];
+    const filenameParts = ['書面分析報告書',y, m, d, name, carType, plate, company];
     const finalFilename = filenameParts.filter(part => part !== "").join("");
 
     // 如果全部都是空的，就給一個預設檔名
