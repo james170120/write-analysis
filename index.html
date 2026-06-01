@@ -52,6 +52,18 @@
             0% { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
         }
+        /* 1. 必填輸入框的底色 (淡淡的黃色提醒) */
+        .input-required {
+            background-color: #fff9c4 !important; /* 淡黃色底色 */
+            border: 1px solid #fbc02d !important; /* 稍微深一點的黃色邊框 */
+        }
+
+        /* 2. (選用) 在必填欄位的文字標籤旁邊加上紅色星號 * */
+        .label-required::after {
+            content: " *";
+            color: #d9534f;
+            font-weight: bold;
+        }
     </style>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
@@ -95,15 +107,27 @@
                 <fieldset>
                     <legend>1. 基本資料</legend>
                     <div class="form-row">
-                        <div><label>要保人姓名</label><input type="text" id="t_app_name"></div>
-                        <div><label>身分證字號</label><input type="text" id="t_app_id"></div>
+                        <div>
+                            <label class="label-required">要保人姓名</label>
+                            <input type="text" id="t_app_name" class="input-required">
+                        </div>
+                        <div>
+                            <label class="label-required">身分證字號</label>
+                            <input type="text" id="t_app_id" class="input-required">
+                        </div>
                     </div>
                     <div class="form-row">
-                        <div><label>生日</label><input type="text" id="t_app_birth"></div>
-                        <div><label>職業</label><input type="text" id="t_app_job"></div>
+                        <div>
+                            <label class="label-required">生日</label>
+                            <input type="text" id="t_app_birth" class="input-required">
+                        </div>
+                        <div>
+                            <label class="label-required">職業</label>
+                            <input type="text" id="t_app_job" class="input-required">
+                        </div>
                     </div>
                     <div class="checkbox-group">
-                        <label>性別：</label>
+                        <label class="label-required">性別：</label>
                         <label><input type="checkbox" id="c_app_m"> 男</label>
                         <label><input type="checkbox" id="c_app_f"> 女</label>
                     </div>
@@ -111,15 +135,25 @@
                     <hr>
                     <div class="checkbox-group"><label><input type="checkbox" id="c_same_app"> 同要保人</label></div>
                     <div class="form-row">
-                        <div><label>被保人姓名</label><input type="text" id="t_ins_name"></div>
-                        <div><label>身分證字號</label><input type="text" id="t_ins_id"></div>
+                        <div>
+                            <label class="label-required">被保人姓名</label>
+                            <input type="text" id="t_ins_name" class="input-required">
+                        </div>
+                        <div><label class="label-required">身分證字號</label>
+                            <input type="text" id="t_ins_id" class="input-required">
+                        </div>
                     </div>
                     <div class="form-row">
-                        <div><label>生日</label><input type="text" id="t_ins_birth"></div>
-                        <div><label>職業</label><input type="text" id="t_ins_job"></div>
+                        <div>
+                            <label class="label-required">生日</label>
+                            <input type="text" id="t_ins_birth" class="input-required">
+                        </div>
+                        <div><label class="label-required">職業</label>
+                            <input type="text" id="t_ins_job" class="input-required">
+                        </div>
                     </div>
                     <div class="checkbox-group">
-                        <label>性別：</label>
+                        <label class="label-required">性別：</label>
                         <label><input type="checkbox" id="c_ins_m"> 男</label>
                         <label><input type="checkbox" id="c_ins_f"> 女</label>
                     </div>
@@ -129,7 +163,7 @@
                         <div><label>車牌號碼</label><input type="text" id="t_car_plate"></div>
                         <div><label>車輛種類</label><input type="text" id="t_car_type"></div>
                     </div>
-                    <label>要/被保人關係</label>
+                    <label class="label-required">要/被保人關係</label>
                     <div class="checkbox-group">
                         <label><input type="checkbox" id="c_rel_1"> 本人</label>
                         <label><input type="checkbox" id="c_rel_2"> 配偶</label>
@@ -179,13 +213,16 @@
                     </div>
                     <input type="text" id="t_spec_company" placeholder="指定公司名稱">
                     <div class="checkbox-group">
-                        <label>是否已有投保其他商業保險/旅平險：</label>
+                        <label class="label-required">是否已有投保其他商業保險/旅平險：</label>
                         <label><input type="checkbox" id="c_has_other_yes"> 是</label>
                         <label><input type="checkbox" id="c_has_other_no"> 否</label>
                     </div>
                     <hr>
                     <div class="form-row">
-                        <div><label>欲投保之保險金額 ①</label><input type="text" id="t_amt_1"></div>
+                        <div>
+                            <label class="label-required">欲投保之保險金額 ①</label>
+                            <input type="text" id="t_amt_1" class="input-required">
+                        </div>
                         <div><label>保額 ②</label><input type="text" id="t_amt_2"></div>
                         <div><label>保額 ③</label><input type="text" id="t_amt_3"></div>
                     </div>
@@ -215,8 +252,8 @@
                     
                     <div class="form-row">
                         <div>
-                            <label>保費</label>
-                            <input type="text" id="t_premium_amt">
+                            <label class="label-required">保費</label>
+                            <input type="text" id="t_premium_amt" class="input-required">
                         </div>
                     </div>
                     
@@ -295,17 +332,23 @@
                 <fieldset>
                     <legend>4. 業務員建議與檢核</legend>
                     <div class="form-row">
-                        <div><label>保險公司 ①</label><input type="text" id="t_rec_c1"></div>
+                        <div>
+                            <label class="label-required">保險公司 ①</label>
+                            <input type="text" id="t_rec_c1" class="input-required"></div>
                         <div><label>保險公司 ②</label><input type="text" id="t_rec_c2"></div>
                         <div><label>保險公司 ③</label><input type="text" id="t_rec_c3"></div>
                     </div>
                     <div class="form-row">
-                        <div><label>保費 ①</label><input type="text" id="t_rec_p1"></div>
+                        <div>
+                            <label class="label-required">保費 ①</label>
+                            <input type="text" id="t_rec_p1" class="input-required"></div>
                         <div><label>保費 ②</label><input type="text" id="t_rec_p2"></div>
                         <div><label>保費 ③</label><input type="text" id="t_rec_p3"></div>
                     </div>
                     <div class="form-row">
-                        <div><label>年期 ①</label><input type="text" id="t_rec_y1"></div>
+                        <div>
+                            <label class="label-required">年期 ①</label>
+                            <input type="text" id="t_rec_y1" class="input-required"></div>
                         <div><label>年期 ②</label><input type="text" id="t_rec_y2"></div>
                         <div><label>年期 ③</label><input type="text" id="t_rec_y3"></div>
                     </div>
@@ -377,9 +420,9 @@
                 <fieldset>
                     <legend>5. 填表日期</legend>
                     <div class="form-row">
-                        <div><input type="text" id="t_date_y" placeholder="年"></div>
-                        <div><input type="text" id="t_date_m" placeholder="月"></div>
-                        <div><input type="text" id="t_date_d" placeholder="日"></div>
+                        <div><input type="text" id="t_date_y" placeholder="年" class="input-required"></div>
+                        <div><input type="text" id="t_date_m" placeholder="月" class="input-required"></div>
+                        <div><input type="text" id="t_date_d" placeholder="日" class="input-required"></div>
                     </div>
                 </fieldset>
 
