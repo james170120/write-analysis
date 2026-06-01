@@ -8,18 +8,21 @@
         * { box-sizing: border-box; }
         body { margin: 0; font-family: sans-serif; height: 100vh; overflow: hidden; background: #333; }
         .container { display: flex; width: 100%; height: 100%; }
-        .left-panel { width: 35%; padding: 20px; background: #f4f7f6; overflow-y: auto; }
+        /* 1. 左側整個大面板背景 (改為舒適的淺灰藍色) */
+        .left-panel { width: 35%; padding: 20px; background: #e2e8f0; overflow-y: auto; }
         .right-panel { width: 65%; background: #525659; }
         iframe { width: 100%; height: 100%; border: none; }
         
-        fieldset { border: 1px solid #c1d3d0; border-radius: 8px; margin-bottom: 20px; padding: 15px; background: #fff; }
+        /* 2. 每個分類的大框框 (原本是純白 #fff，改為柔和的極淺灰) */
+        fieldset { border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 20px; padding: 15px; background: #f1f5f9; }
         legend { font-weight: bold; color: #fff; background: #2b7a78; padding: 6px 15px; border-radius: 20px; font-size: 14px; }
         .form-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: center; }
         .form-row > div { flex: 1; }
         label { display: block; margin-bottom: 4px; font-size: 13px; font-weight: bold; color: #444; }
-        input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background-color: #fafafa; }
         
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px; background: #f9f9f9; border-radius: 4px; border: 1px solid #eee; margin-bottom: 10px; }
+        /* 3. 勾選框的底色 (稍微加深一點點來做出層次感) */
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px; background: #e8eaed; border-radius: 4px; border: 1px solid #dadce0; margin-bottom: 10px; }
         .checkbox-group label { display: flex; align-items: center; font-weight: normal; cursor: pointer; margin-bottom: 0; }
         .checkbox-group input { margin-right: 4px; cursor: pointer; }
         
