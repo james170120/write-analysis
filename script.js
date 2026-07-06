@@ -140,8 +140,7 @@ async function init() {
                     'c_aml_5',        // 洗錢產品 - 一般
                     'c_aml_7'         // 洗錢整體 - 一般
                 ];
-            }
-             else if (val === 'solar') {
+            } else if (val === 'solar') {
                 // --- ☀️ 太陽能/產險範本 ---
                 // 不需要填寫車種類型，直接幫你勾選財產保險與太陽能光電常見欄位
                 presetChecks = [
