@@ -7,7 +7,7 @@ let originalPdfBytes = null;
 let originalFontBytes = null;
 let debounceTimer; 
 
-// 🛡️ 升級版文字小幫手：把 targetFont 加回來！並且保留前置空白與防呆
+// 🛡️ 升級版文字小幫手：加入「動態字體縮放與邊界優化」功能，完美防範長名稱、公司行號被切字！
 function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align = null, addPrefixSpace = false) {
     try {
         const field = form.getTextField(fieldName);
@@ -22,15 +22,32 @@ function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align 
 
             if (align !== null) field.setAlignment(align);
 
+            let rawValue = inputElement.value.trim(); // 取得實際輸入的文字與長度
             let finalValue = inputElement.value;
+            
             if (finalValue !== '') {
                 // 如果開啟了 addPrefixSpace，就在文字最前面加一個半形空白
                 if (addPrefixSpace) finalValue = ' ' + finalValue; 
-                finalValue = finalValue + ' '; // 結尾防呆空白，這能徹底破解分散對齊
+                
+                // 【關鍵修正】只有 4 個字以內的一般姓名才加尾部空白防呆。
+                // 如果是企業行號(字數多)，就不加空白，把珍貴的寬度空間省下來！
+                if (rawValue.length <= 4) {
+                    finalValue = finalValue + ' '; 
+                }
             }
             
             field.setText(finalValue);
-            if (fontSize !== null) field.setFontSize(fontSize); 
+            
+            // 🌟 動態字體縮放：當預設大小為 10 且遇到字數較多時，自動縮小字級防止被 PDF 邊界裁切
+            if (fontSize !== null) {
+                if (rawValue.length >= 6 && fontSize === 10) {
+                    field.setFontSize(8);  // 6字以上公司名自動縮小到 8pt
+                } else if (rawValue.length === 5 && fontSize === 10) {
+                    field.setFontSize(9);  // 5字自動縮小到 9pt
+                } else {
+                    field.setFontSize(fontSize); // 4字以內或特殊指定欄位(如備註)維持原設定
+                }
+            }
             
             // 🌟 單獨為這個欄位更新字型與外觀，絕對不崩潰！
             if (targetFont) {
