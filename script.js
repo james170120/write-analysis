@@ -41,7 +41,7 @@ function fillField(form, fieldName, elementId, targetFont, fontSize = 10, align 
             // 🌟 動態字體縮放：當預設大小為 10 且遇到字數較多時，自動縮小字級防止被 PDF 邊界裁切
             if (fontSize !== null) {
                 if (rawValue.length >= 6 && fontSize === 10) {
-                    field.setFontSize(8);  // 6字以上公司名自動縮小到 8pt
+                    field.setFontSize(7);  // 6字以上公司名自動縮小到 8pt
                 } else if (rawValue.length === 5 && fontSize === 10) {
                     field.setFontSize(9);  // 5字自動縮小到 9pt
                 } else {
