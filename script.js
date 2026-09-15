@@ -202,6 +202,7 @@ async function updatePreview() {
     // 產生全新的網址並記錄下來
     currentPreviewUrl = URL.createObjectURL(blob);
     document.getElementById('pdfPreview').src = currentPreviewUrl;
+    document.getElementById('loadingOverlay').style.display = 'none';
 }
 
 async function downloadPDF() {
