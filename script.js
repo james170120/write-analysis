@@ -3,6 +3,7 @@ const { PDFDocument, TextAlignment, PDFName, StandardFonts } = PDFLib;
 const pdfUrl = './書面分析報告輸入版.pdf';
 const fontUrl = './NotoSansTC-Regular.ttf';
 
+let currentPreviewUrl = null;
 let originalPdfBytes = null;
 let originalFontBytes = null;
 let debounceTimer; 
@@ -189,11 +190,15 @@ async function updatePreview() {
 
     applyFormData(form, customFont, helveticaFont);
 
-    // ⚠️ 這裡不需要 form.updateFieldAppearances 了，因為我們在 fillField 裡獨立做完了
-
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    document.getElementById('pdfPreview').src = URL.createObjectURL(blob);
+
+    // 釋放上一筆 PDF 物件記憶體
+    if (currentPreviewUrl) {
+        URL.revokeObjectURL(currentPreviewUrl);
+    }
+    currentPreviewUrl = URL.createObjectURL(blob);
+    document.getElementById('pdfPreview').src = currentPreviewUrl;
 }
 
 async function downloadPDF() {
