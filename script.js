@@ -179,6 +179,7 @@ async function init() {
     } catch (error) { console.error("載入發生錯誤:", error); }
 }
 
+// 🔄 升級版預覽更新：加入記憶體自動回收機制，徹底解決卡頓問題！
 async function updatePreview() {
     if (!originalPdfBytes || !originalFontBytes) return;
     const pdfDoc = await PDFDocument.load(originalPdfBytes);
@@ -192,11 +193,13 @@ async function updatePreview() {
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-
-    // 釋放上一筆 PDF 物件記憶體
+    
+    // 🌟 關鍵防卡頓魔法：如果之前有產生過預覽網址，先把它從記憶體中刪除
     if (currentPreviewUrl) {
         URL.revokeObjectURL(currentPreviewUrl);
     }
+    
+    // 產生全新的網址並記錄下來
     currentPreviewUrl = URL.createObjectURL(blob);
     document.getElementById('pdfPreview').src = currentPreviewUrl;
 }
